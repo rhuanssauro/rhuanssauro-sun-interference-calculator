@@ -1,4 +1,4 @@
-# rhuanssauro-sun-interference-calculator
+# Rhuanssauro Sun Interference Calculator
 
 ![A geostationary communications satellite over South America. Solar arrays are lit. The Sun sits behind the bus, the same geometry that produces sun transit.](docs/geo-hero.jpg)
 
