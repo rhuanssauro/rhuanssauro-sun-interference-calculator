@@ -6,6 +6,10 @@ A receiving earth station looking at a geostationary satellite will, twice a yea
 
 The default example site is Macaé, Rio de Janeiro, Brazil. Favorites sit at the top of the satellite list: Intelsat 37e (C and Ku), Telesat T-19, Hispasat H36W, and Intelsat 10-02. Every other Clarke-belt object in view of the site remains selectable.
 
+![Impact checker on Intelsat 37e C-band at Macaé: 2.4 m dish, C at 3.95 GHz, geometric sun-transit 12:51–12:57 UTC on 10 September 2026.](docs/dashboard-usage.png)
+
+Example on the page: **Intelsat 37e (C-Band)** at 18.0°W, **Macaé, RJ** (−22.37°, −41.79°), **2.4 m** dish, **C (3.95 GHz)**. Verdict is **Impacted**, geometric sun-transit **12:51:00Z–12:57:00Z (6.0 min)** on 10 September 2026. The table under the verdict is the rest of that Southern-hemisphere window.
+
 ## What sun interference is
 
 Geostationary satellites sit on the Clarke belt, roughly 35,786 km above the equator, with a period of one sidereal day. From a correctly pointed earth station they appear fixed in azimuth and elevation. The Sun does not. Its declination crosses the equatorial plane at the March and September equinoxes, and its hour angle changes at about 0.25° per minute.
@@ -63,6 +67,17 @@ Celestrak: [GP GROUP=geo](https://celestrak.org/NORAD/elements/gp.php?GROUP=geo&
 You need a current browser (Chrome, Firefox, Safari, or Edge). Python 3.9 or newer is enough to serve the folder. It uses the standard library only. See `requirements.txt`. Node.js 18 or newer is optional, for `npm test` and catalog rebuild. There is no pip package, no bundler, and no compile step.
 
 ## Usage
+
+Same path as the screenshot.
+
+1. Open the page (install below, or double-click `index.html`).
+2. **Satellite** — Favorites first. Pick **Intelsat 37e (C-Band)** for the example above. The other pins are Intelsat 37e Ku, Telesat T-19, Hispasat H36W, and Intelsat 10-02. The rest of the belt in view of the site is in the same list.
+3. **Site** — keep **Macaé, RJ**, or type another remote. Latitude is south-negative. Longitude is east-positive (Macaé is −41.79).
+4. **Antenna diameter** — 2.4 m in the example. Smaller dishes stay in the beam longer.
+5. **Band / outbound** — C, Ku, or Ka sets the beamwidth default. If you know the actual receive (outbound) frequency, type it; that replaces the band centre in θ₃dB = 70 λ / D. Inbound frequency and carrier size are stored with the circuit. They do not move the geometric window.
+6. **Check sun transit**. Impacted means the solar disk is inside the receive 3 dB beam at this epoch. The table is UTC start, UTC end, and duration for the days that still have a window. Not in view means the bird is below the local horizon. Out of season means no window in either equinox neighbourhood.
+
+The Clarke-belt chips above the form are the same catalog. Click a chip or pick from the list; both drive the checker.
 
 ### macOS
 
