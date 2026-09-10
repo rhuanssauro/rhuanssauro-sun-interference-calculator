@@ -1,7 +1,7 @@
 {
-  "name": "sun-interference-2026",
+  "name": "rhuanssauro-sun-interference-calculator",
   "private": true,
-  "description": "File-openable GSO Sun Interference dashboard. Rhuanssauro Tech Inc.",
+  "description": "GSO sun-transit checker for a receiving earth station. Rhuanssauro Tech Inc.",
   "scripts": {
     "test": "node --test tests/*.test.js",
     "catalog": "node scripts/build-catalog.js",

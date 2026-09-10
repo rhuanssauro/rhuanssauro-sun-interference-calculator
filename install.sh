@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 PORT="${1:-8765}"
-echo "Sun Interference — Rhuanssauro Tech Inc"
+echo "rhuanssauro-sun-interference-calculator"
 echo "http://127.0.0.1:${PORT}/"
 if command -v python3 >/dev/null 2>&1; then
   exec python3 ./serve.py --port "$PORT"

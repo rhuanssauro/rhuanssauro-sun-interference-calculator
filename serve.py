@@ -43,7 +43,7 @@ def main() -> None:
     os.chdir(ROOT)
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer((args.bind, args.port), Handler) as httpd:
-        print("Sun Interference — http://%s:%s/" % (args.bind, args.port))
+        print("rhuanssauro-sun-interference-calculator  http://%s:%s/" % (args.bind, args.port))
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
