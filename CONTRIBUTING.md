@@ -1,6 +1,6 @@
 # Contributing
 
-This repository is private. Open a branch `feat/<short-name>`, keep AI harness files out of git (see `.gitignore`), and assign reviews to `rhuanssauro`.
+This project is MIT licensed. Open a branch `feat/<short-name>`, keep AI harness files out of git (see `.gitignore`), and assign reviews to `rhuanssauro`.
 
 ```bash
 npm test
