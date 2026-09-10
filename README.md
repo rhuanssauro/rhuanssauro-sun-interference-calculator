@@ -108,4 +108,4 @@ npm run catalog
 
 ## License
 
-© 2026 Rhuanssauro Tech Inc. All rights reserved. Private repository. See [LICENSE](LICENSE).
+This software is open source under the [MIT License](https://opensource.org/license/mit), an OSI-approved license. Copyright (c) 2026 Rhuanssauro Tech Inc. See [LICENSE](LICENSE).
