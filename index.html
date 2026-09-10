@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sun Interference — Rhuanssauro Tech Inc</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <a class="skip" href="#checker">Skip to checker</a>
+  <div class="shell">
+    <header class="mast">
+      <div>
+        <a class="wordmark" href="#" aria-label="Rhuanssauro Inc.">
+          <svg class="claw-mark" viewBox="0 0 34 34" width="28" height="28" aria-hidden="true">
+            <g fill="currentColor">
+              <path d="M7 3 C 11 12, 11 23, 5 33 C 2 23, 3 12, 7 3 Z" transform="rotate(-13 6 18)"></path>
+              <path d="M17 2 C 21 12, 21 23, 16 33 C 12 23, 13 12, 17 2 Z"></path>
+              <path d="M27 3 C 31 12, 31 23, 25 33 C 22 23, 23 12, 27 3 Z" transform="rotate(13 26 18)"></path>
+            </g>
+          </svg>
+          <span class="wordmark-text">
+            <span class="wordmark-name">RHUANSSAURO<span class="inc">Inc.</span></span>
+            <span class="wordmark-line">a datacenter in the jungle</span>
+          </span>
+        </a>
+        <h1>Sun Interference</h1>
+        <p class="lede">
+          Twice a year the Sun lines up behind a geostationary satellite as seen from a receiving earth station.
+          The dish cannot tell solar noise from the carrier. This page predicts that geometry for every Clarke-belt
+          bird in view of a remote site — default <strong>Macaé, Rio de Janeiro, Brazil</strong> — and highlights
+          Intelsat, Hispasat, and Telesat slots that serve South America.
+        </p>
+      </div>
+      <div class="clock-block">
+        <span class="muted">Check epoch (UTC)</span>
+        <strong id="utc-clock">—</strong>
+        <div id="catalog-meta" class="catalog-meta"></div>
+      </div>
+    </header>
+
+    <section class="belt" aria-labelledby="belt-title">
+      <div class="belt-head">
+        <div>
+          <h2 id="belt-title">Clarke belt in view</h2>
+          <p id="belt-count" class="muted">Loading catalog…</p>
+        </div>
+        <div class="legend" aria-label="Vendor legend">
+          <span class="swatch swatch--intelsat"><i></i> Intelsat</span>
+          <span class="swatch swatch--hispasat"><i></i> Hispasat</span>
+          <span class="swatch swatch--telesat"><i></i> Telesat</span>
+        </div>
+      </div>
+      <p class="muted" id="vendor-label">Intelsat · Hispasat · Telesat in view</p>
+      <div id="vendor-rail" class="belt-track belt-track--vendors" role="list"></div>
+      <p class="muted" id="all-label">Full Clarke belt (longitude west → east)</p>
+      <div id="belt-track" class="belt-track" role="list"></div>
+    </section>
+
+    <section class="work" id="checker">
+      <div id="drop-zone" class="drop-zone has-sat">
+        <h2>Impact checker</h2>
+        <p class="drop-sat-name" id="drop-sat-name">Select a satellite</p>
+        <p class="muted" id="drop-sat-meta">Favorites are listed first. Geometry at this earth station uses outbound (receive) frequency when set.</p>
+        <form class="form-grid" onsubmit="return false;">
+          <label class="span-all">Satellite
+            <select id="sat-select"></select>
+          </label>
+          <label>Site preset
+            <select id="site-preset"></select>
+          </label>
+          <label>Remote site
+            <input id="site-name" name="site-name" autocomplete="off">
+          </label>
+          <label>Latitude (°)
+            <input id="site-lat" name="lat" inputmode="decimal" value="-22.37">
+          </label>
+          <label>Longitude (°E, west negative)
+            <input id="site-lon" name="lon" inputmode="decimal" value="-41.79">
+          </label>
+          <label>Antenna diameter (m)
+            <input id="ant-d" name="diameter" inputmode="decimal" value="2.4">
+          </label>
+          <label>Band
+            <select id="band">
+              <option value="C" selected>C (3.95 GHz)</option>
+              <option value="Ku">Ku (11.95 GHz)</option>
+              <option value="Ka">Ka (20.2 GHz)</option>
+            </select>
+          </label>
+          <label>Outbound (remote RX)
+            <input id="freq-out" name="outbound" inputmode="decimal" placeholder="MHz or GHz">
+          </label>
+          <label>Inbound (remote TX)
+            <input id="freq-in" name="inbound" inputmode="decimal" placeholder="MHz or GHz">
+          </label>
+          <label>Carrier size
+            <input id="carrier" name="carrier" inputmode="decimal" placeholder="MHz or Hz">
+          </label>
+          <button class="primary" id="run-check" type="button">Check sun transit</button>
+        </form>
+      </div>
+      <aside class="verdict-panel" aria-live="polite">
+        <p id="verdict">Loading…</p>
+        <div id="verdict-detail"></div>
+        <div id="window-table"></div>
+      </aside>
+    </section>
+
+    <article class="brief" id="briefing">
+      <h2>What Sun Interference is</h2>
+      <p>
+        Intelsat’s <em>Sun Interference Background</em> states the cause plainly: the Sun passing directly
+        behind a geostationary satellite as seen from a receiving earth station. For several minutes each day
+        during the equinox season (February/March and September/October), the Sun crosses the equatorial plane
+        used by GSO spacecraft. Apparent solar path then puts the solar disk in the earth station’s line of sight.
+        The Sun is an intense thermal-noise source at the same radio frequencies the satellite uses, so antenna
+        noise temperature rises, G/T falls, and C/N (or C/I) degrades — a sun fade, sun transit, or sun outage.
+      </p>
+      <h3>When it happens</h3>
+      <ul>
+        <li>Northern hemisphere: several days just prior to the March equinox and just after the September equinox.</li>
+        <li>Southern hemisphere (Macaé): the reverse — after March, before September.</li>
+        <li>Sites west of the satellite see morning windows; sites east see afternoon windows.</li>
+        <li>Larger dishes have narrower beams, so the window is shorter. Smaller VSAT antennas stay in outage longer.</li>
+      </ul>
+      <p>
+        Today’s date in this workspace is 10 September 2026, at the end of the Southern-hemisphere
+        pre-equinox window. A Macaé verdict of “out of season” or a last remaining day is a valid owner-style
+        result, not an empty dashboard.
+      </p>
+      <h3>Method used here (owner geometry, not a portal scrape)</h3>
+      <p>
+        Intelsat, Hispasat, and Telesat publish web calculators. They do not publish a public JSON API.
+        This page does not log into MyIntelsat or scrape those UIs. It applies the method those owners
+        document, on public orbital positions.
+      </p>
+      <ul>
+        <li>Hispasat: “This calculator generates estimates based exclusively on geometric angles, and does not consider parameters such as link RF margin, antenna un-pointing, performance.”</li>
+        <li>Intelsat: the calculator “computes the antenna beam width and determines the interference duration” from earth-station size, band, and location.</li>
+        <li>ITU-R S.1525-1: 3 dB beamwidth θ<sub>3dB</sub> = 70 λ / D. Optical solar diameter ≈ 0.48°. Hour angle of the Sun ≈ 0.25° per minute. Maximum duration ≈ (θ<sub>3dB</sub> + 0.48) / 0.25 minutes.</li>
+        <li>This checker: outage while the solar disk (~0.5°) is inside the receive 3 dB beam — half beamwidth + 0.25° solar radius. Verdict is impacted / not impacted / not in view / out of season, plus UTC start, end, and duration when a window exists.</li>
+      </ul>
+      <h3>South America vendor slots</h3>
+      <p>
+        Hispasat’s own calculator lists 30°W (30W-5, 30W-6), 36°W (36W-1), 55.5°W (55W-2), 61°W
+        (Amazonas 2, 3, 5, Nexus), 70°W (70W-1), and 74°W (74W-1). Telesat’s Telstar 19V (~63°W),
+        11N (~37.5°W) and 12V (~15°W) are Atlantic/Americas birds. Intelsat’s Atlantic fleet
+        (IS-14 45°W, IS-21 58°W, IS-34 55.5°W, IS-35e 34.5°W, IS-37e 18°W, and others) is tagged
+        in the full in-view set, not shown as if they were the only satellites that exist.
+      </p>
+      <p>
+        Orbital longitudes on the belt come from Celestrak GP <code>GROUP=geo</code> OMM JSON
+        (Earth-fixed longitude = RAAN + argument of perigee + mean anomaly − GMST at epoch).
+        A dated snapshot is bundled so the page works on <code>file://</code>. Live refresh is
+        attempted only when the origin is not a local file (Celestrak CORS and their one-download-per-update policy).
+      </p>
+    </article>
+
+    <footer class="sources" id="source-block" data-sources="official">
+      <h2>Official sources</h2>
+      <ol>
+        <li><a href="https://my.intelsat.com/si/public/">Intelsat / SES Sun Interference Calculator</a> — my.intelsat.com/si/public/</li>
+        <li><a href="https://my.intelsat.com/resource/si/Sun_Interference_Background.pdf">Intelsat Sun Interference Background (PDF)</a></li>
+        <li><a href="https://www.hispasat.com/en/useful-information/solar-interference-calculator">Hispasat solar interference calculator</a> (geometric only; slots 30W, 36W, 55.5W, 61W Amazonas, 70W, 74W)</li>
+        <li><a href="https://www.hispasat.com/en/clientes-e-instaladores/calculator">Hispasat clientes e instaladores calculator</a> (same tool)</li>
+        <li><a href="https://app.telesat.com/sun-transit-calculator">Telesat sun-transit calculator</a></li>
+        <li><a href="https://celestrak.org/NORAD/elements/gp.php?GROUP=geo&amp;FORMAT=json">Celestrak GP GROUP=geo JSON</a> — catalog source. Supplemental operator GP: <a href="https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?FILE=intelsat&amp;FORMAT=json">Intelsat</a>, <a href="https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?FILE=telesat&amp;FORMAT=json">Telesat</a>.</li>
+        <li><a href="https://www.itu.int/dms_pubrec/itu-r/rec/s/R-REC-S.1525-1-200209-I!!PDF-E.pdf">ITU-R S.1525-1</a> — beamwidth and duration formulae.</li>
+      </ol>
+      <p class="muted">
+        Not a substitute for the operators’ logged-in ephemeris calculators during the week of outage.
+        Re-run those tools with current Keplerian data before taking a circuit down.
+      </p>
+      <div class="brand-bar">
+        <img
+          class="brand-watermark"
+          src="assets/rhuanssauro-tech-watermark-no-background.png"
+          alt="Rhuanssauro Inc. — a datacenter in the jungle"
+          width="1158"
+          height="64">
+      </div>
+    </footer>
+  </div>
+  <script src="data/geo-snapshot.js"></script>
+  <script src="js/sun-transit.js"></script>
+  <script src="js/catalog.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    SunDashboard.init();
+  </script>
+</body>
+</html>

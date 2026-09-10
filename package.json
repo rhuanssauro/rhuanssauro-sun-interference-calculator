@@ -1,0 +1,10 @@
+{
+  "name": "sun-interference-2026",
+  "private": true,
+  "description": "File-openable GSO Sun Interference dashboard. Rhuanssauro Tech Inc.",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "catalog": "node scripts/build-catalog.js",
+    "browser-load": "node --test tests/browser-load.test.js"
+  }
+}

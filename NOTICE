@@ -1,0 +1,8 @@
+Celestrak GP element sets are provided by Dr. T.S. Kelso / CelesTrak
+(https://celestrak.org/). Follow their usage policy: one download per
+catalog update. This repository ships a dated snapshot so the dashboard
+works offline.
+
+ITU-R S.1525-1, Intelsat Sun Interference Background, Hispasat, and
+Telesat calculator documentation remain the property of their authors.
+This tool cites them; it does not reproduce their closed calculators.
