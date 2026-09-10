@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "GSO sun-transit checker for a receiving earth station. Rhuanssauro Tech Inc.",
   "scripts": {
-    "test": "node --test tests/*.test.js",
+    "test": "node --test tests/*.test.js social-pack/*.test.js",
     "catalog": "node scripts/build-catalog.js",
     "browser-load": "node --test tests/browser-load.test.js"
   }

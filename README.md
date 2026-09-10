@@ -122,6 +122,10 @@ npm run catalog
 
 `npm run catalog` rebuilds `data/geo-snapshot.json` from `data/celestrak-geo-raw.json`.
 
+## Social pack
+
+LinkedIn and Instagram copy, branded stills, and the EN/PT explainer videos live in [`social-pack/`](social-pack/). Posts are bilingual (PT-BR then EN-US) and end on this repository URL.
+
 ## License
 
 This software is open source under the [MIT License](https://opensource.org/license/mit), an OSI-approved license. Copyright (c) 2026 Rhuanssauro Tech Inc. See [LICENSE](LICENSE).

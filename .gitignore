@@ -49,3 +49,6 @@ scratch/
 
 # Local education artifacts (operator PDFs, generated media)
 docs/education/
+
+# Test extracts
+social-pack/.last-frames/
