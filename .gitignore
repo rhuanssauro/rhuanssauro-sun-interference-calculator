@@ -46,3 +46,6 @@ graft/
 .cache/
 tmp/
 scratch/
+
+# Local education artifacts (operator PDFs, generated media)
+docs/education/

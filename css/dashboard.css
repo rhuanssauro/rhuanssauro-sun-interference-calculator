@@ -328,9 +328,32 @@ a:hover {
 }
 
 .form-grid .span-all,
+.form-grid .site-name-label,
 .form-grid label[for="site-name"],
 label:has(#site-name) {
   grid-column: 1 / -1;
+}
+
+.site-lookup {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+}
+
+#site-lookup {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#site-lookup:hover {
+  border-color: var(--primary);
 }
 
 #sat-select {
@@ -461,6 +484,50 @@ button.primary:active {
   margin-bottom: var(--space-2);
 }
 
+.place {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+  align-items: stretch;
+}
+
+.place-map,
+.place-wx {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.place-map h2,
+.place-wx h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+#site-map {
+  display: block;
+  width: 100%;
+  min-height: 18rem;
+  height: 22rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.place-links {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.place-links a {
+  font-weight: 600;
+}
+
 .brief {
   display: grid;
   gap: var(--space-4);
@@ -527,7 +594,12 @@ button.primary:active {
 
 @media (max-width: 860px) {
   .mast,
-  .work {
+  .work,
+  .place {
+    grid-template-columns: 1fr;
+  }
+
+  .site-lookup {
     grid-template-columns: 1fr;
   }
 

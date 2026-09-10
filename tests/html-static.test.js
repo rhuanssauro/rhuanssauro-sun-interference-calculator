@@ -23,9 +23,14 @@ test("HTML defaults to Macaé and uses a satellite select, not drag-and-drop", f
   assert.match(html, /value="-22\.37"/);
   assert.match(html, /value="-41\.79"/);
   assert.match(html, /id="sat-select"/);
-  assert.match(html, /id="freq-out"/);
-  assert.match(html, /id="freq-in"/);
+  assert.match(html, /id="freq"/);
+  assert.equal(/id="freq-out"/.test(html), false);
+  assert.equal(/id="freq-in"/.test(html), false);
+  assert.match(html, />Frequency\s/);
   assert.match(html, /id="carrier"/);
+  assert.match(html, /id="site-map"/);
+  assert.match(html, /id="site-lookup"/);
+  assert.equal(/notebooklm\.google\.com/.test(html), false);
   assert.match(html, /Rhuanssauro/);
   assert.match(html, /a datacenter in the jungle/);
   assert.match(html, /rhuanssauro-tech-watermark-no-background\.png/);

@@ -10,7 +10,7 @@ Teleport NOC operators and field VSAT engineers in South America. They sit a dar
 
 ## Product Purpose
 
-A file-openable HTML dashboard that predicts GSO Sun Interference (sun-transit / sun outage) for every Clarke-belt satellite in view of a remote earth station. Default site is Macaé. Intelsat, Hispasat, and Telesat birds that serve South America are highlighted in the full in-view set. The operator picks a satellite from the select (favorites first: Intelsat 37e C/Ku, Telesat T-19, Hispasat H36W, Intelsat 10-02), enters site, antenna diameter, outbound/inbound frequency, and carrier size, and gets an owner-style geometric verdict. Branding: Rhuanssauro Tech Inc.
+A file-openable HTML dashboard that predicts GSO Sun Interference (sun-transit / sun outage) for every Clarke-belt satellite in view of a remote earth station. Default site is Macaé. Intelsat, Hispasat, and Telesat birds that serve South America are highlighted in the full in-view set. The operator picks a satellite from the select (favorites first: Intelsat 37e C/Ku, Telesat T-19, Hispasat H36W, Intelsat 10-02), enters site, antenna diameter, receive frequency, and carrier size, and gets an owner-style geometric verdict. Branding: Rhuanssauro Tech Inc.
 
 Success: a filled page that works on `file://`, cites official owner calculators, and never blanks while waiting for live ephemeris.
 
