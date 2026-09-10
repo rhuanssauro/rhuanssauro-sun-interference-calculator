@@ -6,7 +6,7 @@ A receiving earth station looking at a geostationary satellite will, twice a yea
 
 The default example site is Macaé, Rio de Janeiro, Brazil. Favorites sit at the top of the satellite list: Intelsat 37e (C and Ku), Telesat T-19, Hispasat H36W, and Intelsat 10-02. Every other Clarke-belt object in view of the site remains selectable.
 
-![Impact checker on Intelsat 37e C-band at Macaé: receive Frequency field, Google Map pin on the remote, weather at site, geometric sun-transit 12:51–12:57 UTC on 10 September 2026.](docs/dashboard-usage.png)
+![Impact checker on Intelsat 37e C-band at Macaé: receive Frequency field, Google Map pin on the remote, weather at site, geometric sun-transit 12:51–12:57 UTC on 10 September 2026.](docs/dashboard-frequency-map.png)
 
 Example on the page: **Intelsat 37e (C-Band)** at 18.0°W, **Macaé, RJ** (−22.37°, −41.79°), **2.4 m** dish, **C (3.95 GHz)**. There is one **Frequency** field (receive only — no inbound/TX). Verdict is **Impacted**, geometric sun-transit **12:51:00Z–12:57:00Z (6.0 min)** on 10 September 2026. The Google Map under the checker pins that latitude/longitude; weather at the pin is Open-Meteo and does not change the window.
 
