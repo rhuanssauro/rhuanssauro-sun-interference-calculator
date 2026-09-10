@@ -10,6 +10,7 @@ var root = path.join(__dirname, "..");
 var files = [
   { file: "js/sun-transit.js", global: "SunTransit" },
   { file: "js/catalog.js", global: "GeoCatalog" },
+  { file: "js/place.js", global: "SitePlace" },
   { file: "js/app.js", global: "SunDashboard" }
 ];
 

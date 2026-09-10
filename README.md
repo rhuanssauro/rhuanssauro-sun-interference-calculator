@@ -38,17 +38,17 @@ How long each event lasts depends on dish size, downlink frequency, and how clos
 
 You will not see this on every satellite from a given site on the same clock time. Each orbital slot has its own look angles. A bird at 18°W and a bird at 61°W from Macaé have different azimuths and elevations, so they transit at different UTC hours. That is why a NOC that carries several Atlantic and Americas slots needs a per-circuit check, not a single “equinox week” calendar.
 
-The receive path is the one that cares. Sun interference at *this* earth station is a downlink problem: outbound from the hub, inbound to the remote, the frequency the dish is listening on. The remote’s transmit (inbound to the hub) can still be clean while the remote’s receive is in the Sun. The hub can be in its own window at a different time of day because it sits at a different longitude.
+The receive path is the one that cares. Sun interference at *this* earth station is a downlink problem: the frequency the dish is listening on. The remote’s transmit can still be clean while the remote’s receive is in the Sun. The hub can be in its own window at a different time of day because it sits at a different longitude.
 
 ## How the calculator applies that
 
-You open a page, pick a satellite, confirm the remote’s latitude and longitude, enter antenna diameter, and set the band or the actual outbound (receive) frequency. The calculator computes look angles to that GEO slot, the Sun’s apparent position, and the angular separation between the two. Outage is declared while the solar disk (about 0.5°) sits inside the receive 3 dB beam, which we treat as half beamwidth plus 0.25° solar radius.
+You open a page, pick a satellite, confirm the remote’s latitude and longitude, enter antenna diameter, and set the band or the actual receive frequency. The calculator computes look angles to that GEO slot, the Sun’s apparent position, and the angular separation between the two. Outage is declared while the solar disk (about 0.5°) sits inside the receive 3 dB beam, which we treat as half beamwidth plus 0.25° solar radius.
 
 If the satellite is below the local horizon, the verdict is not in view. If the date is outside both equinox neighbourhoods and no window is found, the verdict is out of season. If a window exists today, you get UTC start, UTC end, and duration. If the season is open but the Sun is not in the beam at this epoch, you get the nearby days that still have a geometric window.
 
 Favorites are listed first so the birds we actually watch in South America are one click away: Intelsat 37e on C and on Ku, Telesat T-19, Hispasat H36W, Intelsat 10-02. The Clarke belt in view of the site is still there underneath, tagged for Intelsat, Hispasat, and Telesat among the full set.
 
-Outbound frequency, when you type it, replaces the band-centre default in the beamwidth formula. Inbound frequency and carrier size are recorded with the circuit. They do not change the geometric window. Carrier width is an RF-margin question, and this tool does not claim RF margin.
+Frequency, when you type it, is the receive frequency and replaces the band-centre default in the beamwidth formula. Carrier size is recorded with the circuit. It does not change the geometric window. Carrier width is an RF-margin question, and this tool does not claim RF margin.
 
 The page is static HTML. There is no account and no scrape of MyIntelsat, Hispasat, or Telesat. Orbital longitudes come from a bundled Celestrak GP `GROUP=geo` snapshot. Live refresh is attempted only when you serve the page over http(s). On `file://` the snapshot is enough to run a check.
 
@@ -74,10 +74,11 @@ Same path as the screenshot.
 2. **Satellite** — Favorites first. Pick **Intelsat 37e (C-Band)** for the example above. The other pins are Intelsat 37e Ku, Telesat T-19, Hispasat H36W, and Intelsat 10-02. The rest of the belt in view of the site is in the same list.
 3. **Site** — keep **Macaé, RJ**, or type another remote. Latitude is south-negative. Longitude is east-positive (Macaé is −41.79).
 4. **Antenna diameter** — 2.4 m in the example. Smaller dishes stay in the beam longer.
-5. **Band / outbound** — C, Ku, or Ka sets the beamwidth default. If you know the actual receive (outbound) frequency, type it; that replaces the band centre in θ₃dB = 70 λ / D. Inbound frequency and carrier size are stored with the circuit. They do not move the geometric window.
+5. **Band / Frequency** — C, Ku, or Ka sets the beamwidth default. If you know the actual receive frequency, type it; that replaces the band centre in θ₃dB = 70 λ / D. There is no inbound/TX field: sun interference at this dish is receive-only. Carrier size is stored with the circuit and does not move the geometric window.
 6. **Check sun transit**. Impacted means the solar disk is inside the receive 3 dB beam at this epoch. The table is UTC start, UTC end, and duration for the days that still have a window. Not in view means the bird is below the local horizon. Out of season means no window in either equinox neighbourhood.
+7. **Earth station map** — the Google Map below the checker pins the latitude / longitude you entered. **Look up** on the remote-site field geocodes a place name (Open-Meteo) and writes the coordinates. Weather at that pin is Open-Meteo current conditions. It does not change the geometric window.
 
-The Clarke-belt chips above the form are the same catalog. Click a chip or pick from the list; both drive the checker.
+The Clarke-belt chips above the form are the same catalog. Click a chip or pick from the list; both drive the checker. Map and weather need a network path (`python3 serve.py`); they stay quiet on `file://`.
 
 ### macOS
 

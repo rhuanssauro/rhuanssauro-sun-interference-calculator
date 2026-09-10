@@ -9,3 +9,6 @@
 - Celestrak Intelsat supplemental GP — https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?FILE=intelsat&FORMAT=json
 - Celestrak Telesat supplemental GP — https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?FILE=telesat&FORMAT=json
 - ITU-R S.1525-1 — https://www.itu.int/dms_pubrec/itu-r/rec/s/R-REC-S.1525-1-200209-I!!PDF-E.pdf
+- Google Maps (site pin) — https://developers.google.com/maps/ — listed under Geocoding in https://github.com/public-apis/public-apis
+- Open-Meteo weather — https://open-meteo.com/ — listed under Weather in https://github.com/public-apis/public-apis
+- Open-Meteo geocoding — https://geocoding-api.open-meteo.com/v1/search

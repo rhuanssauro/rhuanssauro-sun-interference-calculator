@@ -61,7 +61,7 @@
       <div id="drop-zone" class="drop-zone has-sat">
         <h2>Impact checker</h2>
         <p class="drop-sat-name" id="drop-sat-name">Select a satellite</p>
-        <p class="muted" id="drop-sat-meta">Favorites are listed first. Geometry at this earth station uses outbound (receive) frequency when set.</p>
+        <p class="muted" id="drop-sat-meta">Favorites are listed first. Geometry at this earth station uses receive frequency when set.</p>
         <form class="form-grid" onsubmit="return false;">
           <label class="span-all">Satellite
             <select id="sat-select"></select>
@@ -69,8 +69,11 @@
           <label>Site preset
             <select id="site-preset"></select>
           </label>
-          <label>Remote site
-            <input id="site-name" name="site-name" autocomplete="off">
+          <label class="site-name-label">Remote site
+            <span class="site-lookup">
+              <input id="site-name" name="site-name" autocomplete="off">
+              <button type="button" id="site-lookup">Look up</button>
+            </span>
           </label>
           <label>Latitude (°)
             <input id="site-lat" name="lat" inputmode="decimal" value="-22.37">
@@ -88,11 +91,8 @@
               <option value="Ka">Ka (20.2 GHz)</option>
             </select>
           </label>
-          <label>Outbound (remote RX)
-            <input id="freq-out" name="outbound" inputmode="decimal" placeholder="MHz or GHz">
-          </label>
-          <label>Inbound (remote TX)
-            <input id="freq-in" name="inbound" inputmode="decimal" placeholder="MHz or GHz">
+          <label>Frequency
+            <input id="freq" name="frequency" inputmode="decimal" placeholder="MHz or GHz, receive">
           </label>
           <label>Carrier size
             <input id="carrier" name="carrier" inputmode="decimal" placeholder="MHz or Hz">
@@ -104,6 +104,28 @@
         <p id="verdict">Loading…</p>
         <div id="verdict-detail"></div>
         <div id="window-table"></div>
+      </aside>
+    </section>
+
+    <section class="place" id="place" aria-labelledby="place-title">
+      <div class="place-map">
+        <h2 id="place-title">Earth station</h2>
+        <p id="place-label" class="muted">Pin the remote so the coordinates match the site you meant.</p>
+        <iframe
+          id="site-map"
+          title="Google Map of the earth station"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen></iframe>
+        <p class="place-links">
+          <a id="gmaps-open" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
+          <span class="muted"> · Google Maps pin at the latitude / longitude above</span>
+        </p>
+      </div>
+      <aside class="place-wx">
+        <h2>Weather at site</h2>
+        <p class="muted">Open-Meteo current conditions. Weather does not change the geometric sun-transit window.</p>
+        <div id="wx-facts"></div>
       </aside>
     </section>
 
@@ -167,6 +189,7 @@
         <li><a href="https://app.telesat.com/sun-transit-calculator">Telesat sun-transit calculator</a></li>
         <li><a href="https://celestrak.org/NORAD/elements/gp.php?GROUP=geo&amp;FORMAT=json">Celestrak GP GROUP=geo JSON</a> — catalog source. Supplemental operator GP: <a href="https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?FILE=intelsat&amp;FORMAT=json">Intelsat</a>, <a href="https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?FILE=telesat&amp;FORMAT=json">Telesat</a>.</li>
         <li><a href="https://www.itu.int/dms_pubrec/itu-r/rec/s/R-REC-S.1525-1-200209-I!!PDF-E.pdf">ITU-R S.1525-1</a> — beamwidth and duration formulae.</li>
+        <li><a href="https://developers.google.com/maps/">Google Maps</a> — site pin (<a href="https://github.com/public-apis/public-apis#geocoding">public-apis Geocoding</a>). <a href="https://open-meteo.com/">Open-Meteo</a> — weather and place lookup (<a href="https://github.com/public-apis/public-apis#weather">public-apis Weather</a>).</li>
       </ol>
       <p class="muted">
         Not a substitute for the operators’ logged-in ephemeris calculators during the week of outage.
@@ -185,6 +208,7 @@
   <script src="data/geo-snapshot.js"></script>
   <script src="js/sun-transit.js"></script>
   <script src="js/catalog.js"></script>
+  <script src="js/place.js"></script>
   <script src="js/app.js"></script>
   <script>
     SunDashboard.init();

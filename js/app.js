@@ -30,14 +30,17 @@
     },
     diameterM: 2.4,
     band: "C",
-    outboundGHz: null,
-    inboundGHz: null,
+    frequencyGHz: null,
     carrierHz: null,
     satellite: null,
     favoriteKey: FAVORITES[0].key,
     inView: [],
-    result: null
+    result: null,
+    weather: null
   };
+
+  var wxAbort = null;
+  var lastPinKey = "";
 
   var PRESETS = [
     { name: "Macaé, RJ", lat: -22.37, lon: -41.79 },
@@ -288,8 +291,7 @@
     state.site = { name: name, lat: lat, lon: lon };
     state.diameterM = d;
     state.band = band;
-    state.outboundGHz = SunTransit.parseToGHz($("freq-out") && $("freq-out").value);
-    state.inboundGHz = SunTransit.parseToGHz($("freq-in") && $("freq-in").value);
+    state.frequencyGHz = SunTransit.parseToGHz($("freq") && $("freq").value);
     state.carrierHz = SunTransit.parseCarrierHz($("carrier") && $("carrier").value);
   }
 
@@ -319,6 +321,7 @@
     }
     refreshInView();
     if (!state.satellite) {
+      updatePlace();
       if (verdictEl) {
         verdictEl.textContent = "Select a satellite from the list.";
         verdictEl.dataset.status = "empty";
@@ -326,7 +329,7 @@
       if (detailEl) detailEl.textContent = "";
       return;
     }
-    var freq = state.outboundGHz != null ? state.outboundGHz : state.band;
+    var freq = state.frequencyGHz != null ? state.frequencyGHz : state.band;
     var r = SunTransit.checkInterference({
       lat: state.site.lat,
       lon: state.site.lon,
@@ -364,16 +367,13 @@
         "</dd></div>" +
         "<div><dt>Band / RX</dt><dd>" +
         state.band +
-        " · check freq " +
+        " · " +
         r.bandGHz.toFixed(4) +
         " GHz · dish " +
         state.diameterM.toFixed(2) +
         " m</dd></div>" +
-        "<div><dt>Outbound (RX)</dt><dd>" +
-        SunTransit.formatRfGHz(state.outboundGHz) +
-        "</dd></div>" +
-        "<div><dt>Inbound (TX)</dt><dd>" +
-        SunTransit.formatRfGHz(state.inboundGHz) +
+        "<div><dt>Frequency</dt><dd>" +
+        SunTransit.formatRfGHz(state.frequencyGHz) +
         "</dd></div>" +
         "<div><dt>Carrier</dt><dd>" +
         SunTransit.formatCarrier(state.carrierHz) +
@@ -388,6 +388,7 @@
         r.notes.map(escapeHtml).join(" ") +
         " Carrier size is recorded for the circuit; the geometric window does not use symbol rate.</p>";
     }
+    updatePlace();
     if (tableEl) {
       var rows = r.nearbyWindows || [];
       if (!rows.length) {
@@ -418,7 +419,7 @@
   }
 
   function bindForm() {
-    ["site-lat", "site-lon", "ant-d", "band", "site-name", "freq-out", "freq-in", "carrier"].forEach(function (id) {
+    ["site-lat", "site-lon", "ant-d", "band", "site-name", "freq", "carrier"].forEach(function (id) {
       var el = $(id);
       if (!el) return;
       el.addEventListener("change", function () {
@@ -456,6 +457,165 @@
     }
     var check = $("run-check");
     if (check) check.addEventListener("click", runCheck);
+    var lookup = $("site-lookup");
+    if (lookup) lookup.addEventListener("click", lookupPlace);
+    var nameEl = $("site-name");
+    if (nameEl) {
+      nameEl.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter") {
+          ev.preventDefault();
+          lookupPlace();
+        }
+      });
+    }
+  }
+
+  function pinKey(site) {
+    return Number(site.lat).toFixed(5) + "," + Number(site.lon).toFixed(5);
+  }
+
+  function updatePlace() {
+    if (typeof SitePlace === "undefined") return;
+    var lat = state.site.lat;
+    var lon = state.site.lon;
+    var embed = SitePlace.mapsEmbedUrl(lat, lon);
+    var open = SitePlace.mapsOpenUrl(lat, lon);
+    var iframe = $("site-map");
+    var link = $("gmaps-open");
+    var label = $("place-label");
+    var name = state.site.name || "Remote";
+    if (iframe && embed && iframe.getAttribute("src") !== embed) {
+      iframe.src = embed;
+      iframe.title = "Google Map of " + name;
+    }
+    if (link && open) {
+      link.href = open;
+      link.textContent = "Open in Google Maps";
+    }
+    if (label) {
+      label.textContent =
+        name +
+        " · " +
+        Math.abs(lat).toFixed(4) +
+        "°" +
+        (lat < 0 ? "S" : "N") +
+        "  " +
+        Math.abs(lon).toFixed(4) +
+        "°" +
+        (lon < 0 ? "W" : "E");
+    }
+    var key = pinKey(state.site);
+    if (key !== lastPinKey) {
+      lastPinKey = key;
+      loadWeather(lat, lon);
+    }
+  }
+
+  function renderWeather(wx, err) {
+    var el = $("wx-facts");
+    if (!el) return;
+    if (err) {
+      el.innerHTML = "<p class='muted'>" + escapeHtml(err) + "</p>";
+      return;
+    }
+    if (!wx) {
+      el.innerHTML = "<p class='muted'>Weather not loaded.</p>";
+      return;
+    }
+    el.innerHTML =
+      "<dl class='facts'>" +
+      "<div><dt>Sky</dt><dd>" +
+      escapeHtml(wx.weather) +
+      "</dd></div>" +
+      "<div><dt>Temperature</dt><dd>" +
+      (wx.temperatureC != null ? wx.temperatureC.toFixed(1) + " °C" : "—") +
+      "</dd></div>" +
+      "<div><dt>Cloud cover</dt><dd>" +
+      (wx.cloudPct != null ? wx.cloudPct + " %" : "—") +
+      "</dd></div>" +
+      "<div><dt>Wind</dt><dd>" +
+      (wx.windKmh != null ? wx.windKmh.toFixed(1) + " km/h " + wx.windDir : "—") +
+      "</dd></div>" +
+      "<div><dt>Humidity</dt><dd>" +
+      (wx.humidityPct != null ? wx.humidityPct + " %" : "—") +
+      "</dd></div>" +
+      "<div><dt>Precip</dt><dd>" +
+      (wx.precipMm != null ? wx.precipMm.toFixed(1) + " mm" : "—") +
+      "</dd></div>" +
+      "<div><dt>Observed</dt><dd>" +
+      escapeHtml(wx.observed || "—") +
+      (wx.timezone ? " · " + escapeHtml(wx.timezone) : "") +
+      "</dd></div>" +
+      "</dl>";
+  }
+
+  function loadWeather(lat, lon) {
+    var el = $("wx-facts");
+    if (typeof SitePlace === "undefined") return;
+    if (!SitePlace.canFetch()) {
+      renderWeather(null, "Serve the page over http(s) to load Open-Meteo weather. The Google Map pin still uses the coordinates above.");
+      return;
+    }
+    var url = SitePlace.weatherUrl(lat, lon);
+    if (!url) return;
+    if (el) el.innerHTML = "<p class='muted'>Loading weather…</p>";
+    if (wxAbort && typeof wxAbort.abort === "function") wxAbort.abort();
+    wxAbort = typeof AbortController === "function" ? new AbortController() : null;
+    var opts = wxAbort ? { signal: wxAbort.signal } : {};
+    fetch(url, opts)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Open-Meteo HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (json) {
+        var wx = SitePlace.parseWeather(json);
+        state.weather = wx;
+        if (!wx) throw new Error("Open-Meteo returned no current observation.");
+        renderWeather(wx, null);
+      })
+      .catch(function (err) {
+        if (err && err.name === "AbortError") return;
+        state.weather = null;
+        renderWeather(null, "Weather unavailable: " + (err && err.message ? err.message : String(err)));
+      });
+  }
+
+  function lookupPlace() {
+    if (typeof SitePlace === "undefined") return;
+    var nameEl = $("site-name");
+    var q = nameEl && nameEl.value ? nameEl.value.trim() : "";
+    var label = $("place-label");
+    if (q.length < 2) {
+      if (label) label.textContent = "Type a place name, then Look up — or enter latitude and longitude.";
+      return;
+    }
+    if (!SitePlace.canFetch()) {
+      if (label) label.textContent = "Place lookup needs http(s). Type latitude and longitude, or pick a preset.";
+      return;
+    }
+    var url = SitePlace.geocodeUrl(q);
+    fetch(url)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Geocode HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (json) {
+        var hit = SitePlace.parseGeocode(json);
+        if (!hit) throw new Error("No match for “" + q + "”.");
+        if (nameEl) nameEl.value = hit.name;
+        if ($("site-lat")) $("site-lat").value = String(hit.lat);
+        if ($("site-lon")) $("site-lon").value = String(hit.lon);
+        var preset = $("site-preset");
+        if (preset) preset.value = "";
+        readForm();
+        refreshInView();
+        runCheck();
+      })
+      .catch(function (err) {
+        if (label) {
+          label.textContent = "Look up failed: " + (err && err.message ? err.message : String(err));
+        }
+      });
   }
 
   function fillPresets() {
@@ -498,6 +658,7 @@
     if ($("ant-d")) $("ant-d").value = String(state.diameterM);
     if ($("site-name")) $("site-name").value = state.site.name;
     if ($("band")) $("band").value = state.band;
+    updatePlace();
 
     var attemptLive = typeof GeoCatalog !== "undefined" && GeoCatalog.canAttemptLive();
     var loader =
@@ -514,6 +675,7 @@
         var first = FAVORITES[0];
         var sat = findSatByName(first.name) || defaultSatellite(state.inView);
         applySelection(sat, first.key, first.band);
+        updatePlace();
         return state;
       })
       .catch(function (err) {
@@ -533,6 +695,8 @@
     runCheck: runCheck,
     PRESETS: PRESETS,
     FAVORITES: FAVORITES,
-    defaultSatellite: defaultSatellite
+    defaultSatellite: defaultSatellite,
+    updatePlace: updatePlace,
+    lookupPlace: lookupPlace
   };
 });
