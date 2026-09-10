@@ -1,0 +1,10 @@
+# Runtime needs Python 3.9+ from python.org, Homebrew, apt, or dnf.
+# serve.py uses the standard library only (http.server, argparse).
+# There are no pip packages to install.
+#
+#   python3 serve.py --port 8765
+#   py -3 serve.py --port 8765
+#
+# Optional Node.js 18+ is used only for:
+#   npm test
+#   npm run catalog
