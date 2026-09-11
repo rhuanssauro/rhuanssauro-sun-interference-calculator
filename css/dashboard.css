@@ -237,8 +237,10 @@ a:hover {
 }
 
 .theme-switch {
-  display: inline-flex;
+  display: flex;
   gap: 0;
+  width: max-content;
+  margin-left: auto;
   margin-bottom: var(--space-2);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -739,6 +741,10 @@ button.primary:active {
 
   .clock-block {
     text-align: left;
+  }
+
+  .theme-switch {
+    margin-left: 0;
   }
 
   .facts > div {
