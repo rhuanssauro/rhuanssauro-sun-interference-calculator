@@ -80,6 +80,20 @@ Same path as the screenshot.
 
 The Clarke-belt chips above the form are the same catalog. Click a chip or pick from the list; both drive the checker. Map and weather need a network path (`python3 serve.py`); they stay quiet on `file://`.
 
+## Clock, theme, and export
+
+**UTC clock.** The header shows two stamps. **UTC now** is a live ticker (about once a second, with milliseconds). **Last check** is the epoch the geometry was actually evaluated at — it updates when you press **Check sun transit** or change an input, so the verdict and the stamp always agree. The catalog line underneath stays the Celestrak fetch stamp; it is not a clock.
+
+**Dark / Light / System.** The segmented control in the header switches the theme: dark is the night-shift default, light is a paper/ink palette with the same solar amber and lock cyan, and System follows the OS preference. The choice persists in `localStorage` and is applied via `data-theme` on `<html>`.
+
+**Export.** After a check, the CSV / HTML / PDF chips above the verdict export the current prediction — site, satellite, band, diameter, frequency, carrier, verdict, and the geometric windows (date, UTC start, UTC end, duration), plus a disclaimer that this is angles-only geometry and should be padded and re-verified with the operator's own calculator.
+
+- **CSV** downloads the window rows with the parameters as `#` comment lines on top.
+- **HTML** downloads a standalone branded Rhuanssauro Tech Inc report (the watermark is embedded, so the file works detached and on `file://`).
+- **PDF** opens the same report in a new window and hands it to the browser print dialog — pick "Save as PDF". Allow pop-ups for the page if nothing opens.
+
+All three run client-side with no server and no build step.
+
 ### macOS
 
 ```bash

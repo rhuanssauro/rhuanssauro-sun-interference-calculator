@@ -11,6 +11,10 @@ var files = [
   { file: "js/sun-transit.js", global: "SunTransit" },
   { file: "js/catalog.js", global: "GeoCatalog" },
   { file: "js/place.js", global: "SitePlace" },
+  { file: "js/clock.js", global: "UtcClock" },
+  { file: "js/theme.js", global: "ThemeControl" },
+  { file: "js/export-report.js", global: "SunExport" },
+  { file: "assets/watermark-data.js", global: "BrandAssets" },
   { file: "js/app.js", global: "SunDashboard" }
 ];
 

@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sun Interference — Rhuanssauro Tech Inc</title>
   <link rel="stylesheet" href="css/dashboard.css">
+  <script src="js/theme.js"></script>
+  <script>
+    ThemeControl.initTheme();
+  </script>
 </head>
 <body>
   <a class="skip" href="#checker">Skip to checker</a>
@@ -33,8 +37,14 @@
         </p>
       </div>
       <div class="clock-block">
-        <span class="muted">Check epoch (UTC)</span>
+        <div class="theme-switch" role="group" aria-label="Color theme">
+          <button type="button" data-theme-choice="dark" aria-pressed="true">Dark</button>
+          <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-choice="system" aria-pressed="false">System</button>
+        </div>
+        <span class="muted">UTC now</span>
         <strong id="utc-clock">—</strong>
+        <div id="last-check" class="last-check">Last check (UTC) — run the checker</div>
         <div id="catalog-meta" class="catalog-meta"></div>
       </div>
     </header>
@@ -101,6 +111,12 @@
         </form>
       </div>
       <aside class="verdict-panel" aria-live="polite">
+        <div class="export-chips" role="group" aria-label="Export prediction">
+          <span class="muted">Export</span>
+          <button type="button" id="export-csv" disabled>CSV</button>
+          <button type="button" id="export-html" disabled>HTML</button>
+          <button type="button" id="export-pdf" disabled>PDF</button>
+        </div>
         <p id="verdict">Loading…</p>
         <div id="verdict-detail"></div>
         <div id="window-table"></div>
@@ -206,9 +222,12 @@
     </footer>
   </div>
   <script src="data/geo-snapshot.js"></script>
+  <script src="assets/watermark-data.js"></script>
   <script src="js/sun-transit.js"></script>
   <script src="js/catalog.js"></script>
   <script src="js/place.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/export-report.js"></script>
   <script src="js/app.js"></script>
   <script>
     SunDashboard.init();
