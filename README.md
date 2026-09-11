@@ -6,6 +6,20 @@ A receiving earth station looking at a geostationary satellite will, twice a yea
 
 The default example site is Macaé, Rio de Janeiro, Brazil. Favorites sit at the top of the satellite list: Intelsat 37e (C and Ku), Telesat T-19, Hispasat H36W, and Intelsat 10-02. Every other Clarke-belt object in view of the site remains selectable.
 
+## The v1.1 dashboard
+
+Version 1.1 is the first public packaging. Three things landed on top of the geometry: a live **UTC now** ticker next to the **Last check** stamp, a **Dark / Light / System** theme control in the header, and branded **CSV / HTML / PDF** export chips on the verdict. Details in [Clock, theme, and export](#clock-theme-and-export) and the [changelog](CHANGELOG.md).
+
+![Dark theme. Macaé looking at Intelsat 37E (IS-37E), 18.0°W. Header: Dark/Light/System control, live UTC now with milliseconds, Last check stamp, Celestrak catalog line. Verdict: Impacted, geometric sun-transit 12:49:30Z–12:58:30Z, with CSV / HTML / PDF export chips.](docs/dashboard-dark.png)
+
+*Dark — the night-shift default. **UTC now** ticks live in the header; **Last check** is the epoch the geometry was actually evaluated at. Intelsat 37e (C-Band) from Macaé is **Impacted**: the solar disk is inside the receive 3 dB beam, window and duration on the right.*
+
+![Light theme. The same Intelsat 37e check from Macaé on the paper/ink palette: theme control on Light, live UTC clock, Impacted verdict, and the CSV / HTML / PDF export chips above it.](docs/dashboard-light.png)
+
+*Light — paper/ink for a lit ops room, same solar amber. The **CSV / HTML / PDF** chips above the verdict export the current prediction as a branded report; all three run client-side.*
+
+The older walkthrough shot below still matches the flow — receive Frequency field, Google Map pin on the remote, weather at site:
+
 ![Impact checker on Intelsat 37e C-band at Macaé: receive Frequency field, Google Map pin on the remote, weather at site, geometric sun-transit 12:51–12:57 UTC on 10 September 2026.](docs/dashboard-frequency-map.png)
 
 Example on the page: **Intelsat 37e (C-Band)** at 18.0°W, **Macaé, RJ** (−22.37°, −41.79°), **2.4 m** dish, **C (3.95 GHz)**. There is one **Frequency** field (receive only — no inbound/TX). Verdict is **Impacted**, geometric sun-transit **12:51:00Z–12:57:00Z (6.0 min)** on 10 September 2026. The Google Map under the checker pins that latitude/longitude; weather at the pin is Open-Meteo and does not change the window.
