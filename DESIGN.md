@@ -26,6 +26,19 @@ Restrained. Near-black surfaces (chroma 0). Primary solar amber (hue 38, seed) u
 
 Text on primary/danger/ok fills is near-white.
 
+### Light theme (operator-selectable)
+Dark stays the default. A header control (Dark / Light / System, persisted in `localStorage`, applied as `data-theme` on `<html>`) swaps the token set. Light is paper/ink — neutral chroma-0 surfaces, **not** cream — with the same amber (hue 38) and cyan (hue 215) darkened for WCAG AA on paper:
+
+```css
+--bg: oklch(0.96 0 0);
+--surface: oklch(0.99 0 0);
+--ink: oklch(0.24 0.015 38);
+--primary: oklch(0.51 0.14 38);
+--accent: oklch(0.46 0.09 215);
+```
+
+The footer watermark (light art on transparency) sits on a dark strip in light mode.
+
 ## Typography
 IBM Plex Sans (UI) + IBM Plex Mono (slots, UTC, longitudes). Fixed rem scale, ratio ~1.2. Body 1rem. No fluid display type. `tabular-nums` on times and angles. `font-display: swap`, system-ui fallback so `file://` never blanks.
 
