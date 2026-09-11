@@ -14,6 +14,8 @@ A file-openable HTML dashboard that predicts GSO Sun Interference (sun-transit /
 
 Success: a filled page that works on `file://`, cites official owner calculators, and never blanks while waiting for live ephemeris.
 
+The header carries a live **UTC now** clock and a separate **Last check** stamp (the epoch the geometry was evaluated at). The current prediction exports client-side as CSV, a standalone branded HTML report, or PDF via the browser print dialog on that report — parameters, verdict, geometric windows, and an angles-only disclaimer. A Dark / Light / System theme control persists per browser; dark remains the brand default, light is paper/ink (not cream) with the same amber/cyan.
+
 ## Brand Personality
 
 Night-shift teleport. Precise, calm, slightly burnt. Three words: **orbital, amber, terse**.

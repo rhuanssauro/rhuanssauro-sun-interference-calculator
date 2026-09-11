@@ -47,3 +47,36 @@ test("styles are OKLCH and not cream-SaaS", function () {
   assert.match(css, /oklch\(0\.1 0 0\)/);
   assert.equal(/oklch\(0\.9[0-9].*7[0-9]/.test(css), false);
 });
+
+test("header has a live UTC clock plus a separate last-check stamp", function () {
+  assert.match(html, /id="utc-clock"/);
+  assert.match(html, /UTC now/);
+  assert.match(html, /id="last-check"/);
+  assert.match(html, /id="catalog-meta"/);
+  assert.match(html, /js\/clock\.js/);
+  // catalog meta must stay the catalog fetch stamp, not the live clock
+  assert.match(app, /renderCatalogMeta/);
+  assert.equal(/catalog-meta[^]{0,200}UtcClock/.test(app), false);
+});
+
+test("theme switch is present, persisted, and themed via data-theme tokens", function () {
+  assert.match(html, /data-theme-choice="dark"/);
+  assert.match(html, /data-theme-choice="light"/);
+  assert.match(html, /data-theme-choice="system"/);
+  assert.match(html, /js\/theme\.js/);
+  assert.match(css, /html\[data-theme="light"\]/);
+  assert.match(css, /prefers-color-scheme: light/);
+  var theme = fs.readFileSync(path.join(__dirname, "..", "js", "theme.js"), "utf8");
+  assert.match(theme, /localStorage/);
+});
+
+test("export chips exist and the export module is wired", function () {
+  assert.match(html, /id="export-csv"/);
+  assert.match(html, /id="export-html"/);
+  assert.match(html, /id="export-pdf"/);
+  assert.match(html, /js\/export-report\.js/);
+  assert.match(html, /assets\/watermark-data\.js/);
+  assert.match(app, /SunExport\.toCsv/);
+  assert.match(app, /SunExport\.toHtmlReport/);
+  assert.match(app, /SunExport\.openPrintableReport/);
+});
