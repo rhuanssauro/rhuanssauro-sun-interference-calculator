@@ -247,10 +247,11 @@
   }
 
   function hemisphereNote(latDeg) {
-    if (latDeg >= 0) {
+    if (latDeg === 0) return "Equator: use the calculated windows around each equinox; north/south seasonal timing does not apply.";
+    if (latDeg > 0) {
       return "Northern hemisphere: several days just prior to the March equinox and just after the September equinox (Intelsat).";
     }
-    return "Southern hemisphere: reversed — several days after the March equinox and just prior to the September equinox (Intelsat).";
+    return "Southern hemisphere: several days after the March equinox and just before the September equinox (Intelsat).";
   }
 
   function localTimeHint(siteLon, satLon) {
@@ -296,8 +297,9 @@
   }
 
   function windowFromSamples(samples, diameterM, bandOrGhz) {
-    var start = null;
-    var end = null;
+    var windows = [];
+    var current = null;
+    var stepMs = samples.length > 1 ? samples[1].tMs - samples[0].tMs : 0;
     var minSep = Infinity;
     var anyInView = false;
     var i;
@@ -314,10 +316,15 @@
       if (s.satEl > 0) anyInView = true;
       if (e.separationDeg != null && e.separationDeg < minSep) minSep = e.separationDeg;
       if (e.impacted) {
-        if (start == null) start = s.tMs;
-        end = s.tMs;
-      } else if (start != null && end != null && s.tMs - end > 120000) {
-        break;
+        if (!current || (i > 0 && s.tMs - samples[i - 1].tMs > stepMs * 1.5)) {
+          current = { startMs: s.tMs, endMs: s.tMs, durationMin: 0, minSeparationDeg: e.separationDeg };
+          windows.push(current);
+        }
+        current.endMs = s.tMs;
+        current.durationMin = (current.endMs - current.startMs) / 60000;
+        current.minSeparationDeg = Math.min(current.minSeparationDeg, e.separationDeg);
+      } else {
+        current = null;
       }
     }
     if (!anyInView) {
@@ -327,26 +334,29 @@
         durationMin: 0,
         startMs: null,
         endMs: null,
-        minSeparationDeg: null
+        minSeparationDeg: null,
+        windows: []
       };
     }
-    if (start == null) {
+    if (!windows.length) {
       return {
         status: "not-impacted",
         impacted: false,
         durationMin: 0,
         startMs: null,
         endMs: null,
-        minSeparationDeg: minSep === Infinity ? null : minSep
+        minSeparationDeg: minSep === Infinity ? null : minSep,
+        windows: []
       };
     }
     return {
       status: "impacted",
       impacted: true,
-      durationMin: (end - start) / 60000,
-      startMs: start,
-      endMs: end,
-      minSeparationDeg: minSep === Infinity ? null : minSep
+      durationMin: windows[0].durationMin,
+      startMs: windows[0].startMs,
+      endMs: windows[0].endMs,
+      minSeparationDeg: minSep === Infinity ? null : minSep,
+      windows: windows
     };
   }
 
@@ -382,15 +392,19 @@
         startUtc: null,
         endUtc: null,
         durationMin: 0,
-        minSeparationDeg: null
+        minSeparationDeg: null,
+        windows: []
       };
     }
     var center = estimatedTransitUtcMs(date, satLon);
-    var from = center - 4 * 3600 * 1000;
-    var to = center + 4 * 3600 * 1000;
+    var dayMs = 86400000;
+    var from = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    var to = from + dayMs;
     var samples = [];
     var t;
-    for (t = from; t <= to; t += stepMs) {
+    for (t = from; t < to; t += stepMs) {
+      var offset = ((t - center + dayMs / 2 + dayMs) % dayMs) - dayMs / 2;
+      if (Math.abs(offset) > 4 * 3600 * 1000) continue;
       var when = new Date(t);
       var sun = sunPosition(when, lat, lon);
       samples.push({
@@ -412,6 +426,14 @@
       endUtc: win.endMs != null ? new Date(win.endMs).toISOString() : null,
       durationMin: win.durationMin,
       minSeparationDeg: win.minSeparationDeg,
+      windows: win.windows.map(function (window) {
+        return {
+          startUtc: new Date(window.startMs).toISOString(),
+          endUtc: new Date(window.endMs).toISOString(),
+          durationMin: window.durationMin,
+          minSeparationDeg: window.minSeparationDeg
+        };
+      }),
       scanCenterUtc: new Date(center).toISOString()
     };
   }
@@ -450,7 +472,7 @@
       diameterM: diameterM,
       bandOrGhz: bandOrGhz,
       date: now,
-      stepMs: opts.stepMs || 30000
+      stepMs: opts.stepMs || 15000
     });
 
     var season = inEquinoxSeason(now);
@@ -481,15 +503,15 @@
           date: dt,
           stepMs: opts.stepMs || 15000
         });
-        if (p.impacted) {
+        p.windows.forEach(function (window) {
           nearby.push({
             date: dt.toISOString().slice(0, 10),
-            startUtc: p.startUtc,
-            endUtc: p.endUtc,
-            durationMin: p.durationMin,
-            minSeparationDeg: p.minSeparationDeg
+            startUtc: window.startUtc,
+            endUtc: window.endUtc,
+            durationMin: window.durationMin,
+            minSeparationDeg: window.minSeparationDeg
           });
-        }
+        });
       }
     }
 
@@ -497,6 +519,7 @@
       status = "not-impacted";
     }
 
+    var next = nearby.filter(function (window) { return Date.parse(window.startUtc) > now.getTime(); })[0];
     var verdict;
     if (status === "not-in-view") {
       verdict =
@@ -510,27 +533,24 @@
         " UTC (outside the equinox windows).";
     } else if (status === "impacted") {
       verdict =
-        "Impacted. Geometric sun-transit " +
-        formatHms(today.startUtc) +
-        "–" +
-        formatHms(today.endUtc) +
-        " (" +
-        today.durationMin.toFixed(1) +
-        " min) as per 3 dB beamwidth + solar radius.";
-    } else if (nearby.length) {
+        "Impacted geometry predicted for " + now.toISOString().slice(0, 10) + " UTC: " +
+        today.windows.map(function (window) {
+          return formatHms(window.startUtc) + "–" + formatHms(window.endUtc) + " (" + window.durationMin.toFixed(1) + " min)";
+        }).join("; ") + ". Windows are limited to this UTC day. Not a confirmed circuit outage.";
+    } else if (next) {
       verdict =
-        "Not impacted at this epoch. Next geometric window " +
-        nearby[0].date +
+        "Not impacted on this UTC day. Next geometric window " +
+        next.date +
         " " +
-        formatHms(nearby[0].startUtc) +
+        formatHms(next.startUtc) +
         "–" +
-        formatHms(nearby[0].endUtc) +
+        formatHms(next.endUtc) +
         " (" +
-        nearby[0].durationMin.toFixed(1) +
+        next.durationMin.toFixed(1) +
         " min).";
     } else {
       verdict =
-        "Not impacted. Sun–satellite separation " +
+        "Not impacted on this UTC day. No upcoming window in the scanned period. Sun–satellite separation at the last check " +
         (geo.separationDeg != null ? geo.separationDeg.toFixed(2) + "°" : "n/a") +
         " vs outage radius " +
         radius.toFixed(2) +
