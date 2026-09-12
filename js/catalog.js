@@ -276,11 +276,20 @@
     return location.protocol !== "file:";
   }
 
-  function fetchJson(url) {
-    return fetch(url, { cache: "no-cache" }).then(function (res) {
-      if (!res.ok) throw new Error("HTTP " + res.status + " for " + url);
+  function fetchJson(url, timeoutMs) {
+    var controller = typeof AbortController === "function" ? new AbortController() : null;
+    var timer;
+    var request = fetch(url, { cache: "no-cache", signal: controller ? controller.signal : undefined }).then(function (res) {
+      if (!res.ok) throw new Error("Catalog HTTP " + res.status);
       return res.json();
     });
+    var timeout = new Promise(function (_, reject) {
+      timer = setTimeout(function () {
+        reject(new Error("Catalog refresh timed out; the bundled snapshot is still available."));
+        if (controller) controller.abort();
+      }, timeoutMs || 8000);
+    });
+    return Promise.race([request, timeout]).finally(function () { clearTimeout(timer); });
   }
 
   function bundledSnapshot() {
@@ -319,8 +328,9 @@
         result.source = "live-cache";
         return result;
       }
-      return fetchJson(CELESTRAK_GEO)
+      return fetchJson(CELESTRAK_GEO, opts.timeoutMs)
         .then(function (raw) {
+          if (!Array.isArray(raw) || !raw.length) throw new Error("The live catalog contained no satellites.");
           var live = buildSnapshot(raw, { fetchedAt: new Date().toISOString() });
           live.source.url = CELESTRAK_GEO;
           try {

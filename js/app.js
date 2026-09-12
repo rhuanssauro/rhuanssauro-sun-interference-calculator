@@ -41,6 +41,13 @@
 
   var wxAbort = null;
   var lastPinKey = "";
+  var beltCatalog = null;
+  var beltSiteKey = "";
+  var pendingCatalog = null;
+  var lookupAbort = null;
+  var stationRevision = 0;
+  var weatherRevision = 0;
+  var FORM_FIELDS = ["site-lat", "site-lon", "ant-d", "band", "site-name", "freq", "carrier", "hemisphere"];
 
   var PRESETS = [
     { name: "Macaé, RJ", lat: -22.37, lon: -41.79 },
@@ -122,6 +129,7 @@
       (sat.highlightVendor ? " sat-chip--vendor sat-chip--" + sat.operator : "") +
       (state.satellite && state.satellite.id === sat.id ? " is-selected" : "");
     btn.dataset.id = sat.id;
+    btn.setAttribute("aria-pressed", String(!!state.satellite && state.satellite.id === sat.id));
     var look =
       typeof SunTransit !== "undefined"
         ? SunTransit.lookAngles(state.site.lat, state.site.lon, sat.lon, sat.lat || 0)
@@ -148,6 +156,23 @@
     var rail = $("vendor-rail");
     var count = $("belt-count");
     if (!host) return;
+    var siteKey = pinKey(state.site) + ":" + state.site.name;
+    if (beltCatalog === state.catalog && beltSiteKey === siteKey) {
+      [host, rail].forEach(function (el) {
+        if (!el) return;
+        Array.prototype.forEach.call(el.querySelectorAll(".sat-chip"), function (chip) {
+          var selected = !!state.satellite && chip.dataset.id === state.satellite.id;
+          chip.classList.toggle("is-selected", selected);
+          chip.setAttribute("aria-pressed", String(selected));
+        });
+      });
+      return;
+    }
+    var focused = document.activeElement;
+    var focusHost = focused && (host.contains(focused) ? host : rail && rail.contains(focused) ? rail : null);
+    var focusId = focusHost && focused.dataset.id;
+    beltCatalog = state.catalog;
+    beltSiteKey = siteKey;
     host.innerHTML = "";
     if (rail) rail.innerHTML = "";
     var list = state.inView.slice().sort(function (a, b) {
@@ -176,13 +201,13 @@
     list.forEach(function (sat) {
       host.appendChild(makeChip(sat));
     });
-    [host, rail].forEach(function (el) {
-      if (!el) return;
-      var selected = el.querySelector(".is-selected");
-      if (selected && selected.scrollIntoView) {
-        selected.scrollIntoView({ inline: "center", block: "nearest" });
-      }
-    });
+    if (focusHost && focusId) {
+      Array.prototype.some.call(focusHost.querySelectorAll(".sat-chip"), function (chip) {
+        if (chip.dataset.id !== focusId) return false;
+        chip.focus({ preventScroll: true });
+        return true;
+      });
+    }
   }
 
   function fillSatSelect() {
@@ -225,6 +250,10 @@
           "</option>";
       });
     html += "</optgroup>";
+    if (state.satellite && !seen[state.satellite.name] && !state.inView.some(function (s) { return s.id === state.satellite.id; })) {
+      html += '<optgroup label="Selected, below horizon"><option value="' + escapeHtml(state.satellite.id) + '">' +
+        escapeHtml(state.satellite.displayName) + " · " + fmtLon(state.satellite.lon) + "</option></optgroup>";
+    }
     sel.innerHTML = html;
     if (state.favoriteKey) sel.value = state.favoriteKey;
   }
@@ -254,6 +283,13 @@
       $("band").value = band;
       state.band = band;
     }
+    renderSelection();
+    renderBelt();
+    runCheck();
+  }
+
+  function renderSelection() {
+    var sat = state.satellite;
     var nameEl = $("drop-sat-name");
     var metaEl = $("drop-sat-meta");
     var zone = $("drop-zone");
@@ -264,13 +300,11 @@
           " · " +
           operatorLabel(sat.operator) +
           (sat.note ? " · " + sat.note : "")
-        : "Choose a favorite or any in-view bird.";
+        : "Choose a favorite or any satellite in view.";
     }
     if (zone) zone.classList.toggle("has-sat", !!sat);
     var sel = $("sat-select");
     if (sel && state.favoriteKey) sel.value = state.favoriteKey;
-    renderBelt();
-    runCheck();
   }
 
   function selectSatellite(sat) {
@@ -278,21 +312,82 @@
     applySelection(sat, fav ? fav.key : sat && sat.id, fav && fav.band);
   }
 
-  function readForm() {
-    var lat = parseFloat($("site-lat") && $("site-lat").value);
-    var lon = parseFloat($("site-lon") && $("site-lon").value);
-    var d = parseFloat($("ant-d") && $("ant-d").value);
-    var band = ($("band") && $("band").value) || "C";
-    var name = ($("site-name") && $("site-name").value) || state.site.name;
-    if (!isFinite(lat) || !isFinite(lon)) {
-      throw new Error("Latitude and longitude must be numbers.");
+  function fieldError(id, message) {
+    var error = new Error(message);
+    error.field = id;
+    throw error;
+  }
+
+  function numberField(id, label, optional) {
+    var raw = $(id) ? $(id).value.trim() : "";
+    if (optional && !raw) return null;
+    var n = Number(raw);
+    if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(raw) || !isFinite(n)) {
+      fieldError(id, label + " must be a finite number.");
     }
-    if (!(d > 0)) throw new Error("Antenna diameter must be greater than 0 m.");
+    return n;
+  }
+
+  function clearFormError() {
+    if ($("form-error")) $("form-error").textContent = "";
+    FORM_FIELDS.forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      el.removeAttribute("aria-invalid");
+      var ids = (el.getAttribute("aria-describedby") || "").split(/\s+/).filter(function (item) { return item && item !== "form-error"; });
+      if (ids.length) el.setAttribute("aria-describedby", ids.join(" "));
+      else el.removeAttribute("aria-describedby");
+    });
+  }
+
+  function showFormError(err) {
+    if ($("form-error")) $("form-error").textContent = err.message;
+    var el = $(err.field);
+    if (el) {
+      el.setAttribute("aria-invalid", "true");
+      el.setAttribute("aria-describedby", ((el.getAttribute("aria-describedby") || "") + " form-error").trim());
+    }
+  }
+
+  function invalidateResult(message) {
+    state.result = null;
+    setExportEnabled(false);
+    ["verdict-detail", "window-table", "result-summary"].forEach(function (id) {
+      if ($(id)) $(id).innerHTML = "";
+    });
+    if ($("verdict")) {
+      $("verdict").textContent = message || "Inputs changed. Calculate to update the estimate.";
+      $("verdict").dataset.status = "empty";
+    }
+  }
+
+  function readForm(commit) {
+    clearFormError();
+    if ($("hemisphere-status")) $("hemisphere-status").textContent = "Enter a valid latitude to identify the hemisphere.";
+    var lat = numberField("site-lat", "Latitude");
+    var lon = numberField("site-lon", "Longitude");
+    var d = numberField("ant-d", "Antenna diameter");
+    if (lat < -90 || lat > 90) fieldError("site-lat", "Latitude must be between -90 and 90 degrees.");
+    if (lon < -180 || lon > 180) fieldError("site-lon", "Longitude must be between -180 and 180 degrees.");
+    if (!(d > 0)) fieldError("ant-d", "Antenna diameter must be greater than 0 m.");
+    var hemisphere = $("hemisphere") ? $("hemisphere").value : "auto";
+    var actual = lat > 0 ? "Northern hemisphere" : lat < 0 ? "Southern hemisphere" : "Equator";
+    if ($("hemisphere-status")) $("hemisphere-status").textContent = actual + " from latitude " + lat + "°.";
+    if (hemisphere === "north" && !(lat > 0)) fieldError("hemisphere", "Northern hemisphere requires a positive latitude. Choose Auto or correct the latitude.");
+    if (hemisphere === "south" && !(lat < 0)) fieldError("hemisphere", "Southern hemisphere requires a negative latitude. Choose Auto or correct the latitude.");
+    var frequency = numberField("freq", "Receive frequency", true);
+    var carrier = numberField("carrier", "Carrier size", true);
+    if (frequency != null && !(frequency > 0)) fieldError("freq", "Receive frequency must be greater than zero, or left blank for the band default.");
+    if (carrier != null && !(carrier > 0)) fieldError("carrier", "Carrier size must be greater than zero, or left blank.");
+    var band = ($("band") && $("band").value) || "C";
+    if (!SunTransit.BAND_GHZ[band]) fieldError("band", "Choose C, Ku or Ka band.");
+    if (commit === false) return;
+    var name = ($("site-name") && $("site-name").value.trim()) || "Ground station";
     state.site = { name: name, lat: lat, lon: lon };
     state.diameterM = d;
     state.band = band;
-    state.frequencyGHz = SunTransit.parseToGHz($("freq") && $("freq").value);
-    state.carrierHz = SunTransit.parseCarrierHz($("carrier") && $("carrier").value);
+    state.frequencyGHz = SunTransit.parseToGHz(frequency);
+    state.carrierHz = SunTransit.parseCarrierHz(carrier);
   }
 
   function refreshInView() {
@@ -306,29 +401,38 @@
   }
 
   function runCheck() {
+    cancelLookup();
     var verdictEl = $("verdict");
     var detailEl = $("verdict-detail");
     var tableEl = $("window-table");
     try {
       readForm();
     } catch (err) {
-      state.result = null;
-      setExportEnabled(false);
+      invalidateResult("Check the highlighted input.");
+      showFormError(err);
       if (verdictEl) {
-        verdictEl.textContent = "Cannot check: " + err.message;
         verdictEl.dataset.status = "error";
       }
       return;
     }
+    if (pendingCatalog) {
+      var updated = state.satellite && pendingCatalog.catalog.satellites.filter(function (sat) { return sat.id === state.satellite.id; })[0];
+      if (!state.satellite || updated) {
+        state.catalog = pendingCatalog.catalog;
+        state.loadMeta = pendingCatalog;
+        if (updated) state.satellite = updated;
+        renderCatalogMeta();
+      } else {
+        renderCatalogMeta();
+        if ($("catalog-meta")) $("catalog-meta").textContent += " · selected satellite absent from refresh; keeping this snapshot";
+      }
+      pendingCatalog = null;
+    }
+    renderSelection();
     refreshInView();
     if (!state.satellite) {
       updatePlace();
-      setExportEnabled(false);
-      if (verdictEl) {
-        verdictEl.textContent = "Select a satellite from the list.";
-        verdictEl.dataset.status = "empty";
-      }
-      if (detailEl) detailEl.textContent = "";
+      invalidateResult("Select a satellite from the list.");
       return;
     }
     var freq = state.frequencyGHz != null ? state.frequencyGHz : state.band;
@@ -343,8 +447,25 @@
     });
     state.result = r;
     if (verdictEl) {
-      verdictEl.textContent = r.verdict;
+      verdictEl.textContent = {
+        impacted: "Estimated interference window today",
+        "not-impacted": "No estimated window today",
+        "not-in-view": "Satellite below the local horizon",
+        "out-of-season": "Outside the usual equinox season"
+      }[r.status];
       verdictEl.dataset.status = r.status;
+    }
+    if ($("result-summary")) {
+      var today = r.today;
+      var windowText = today.impacted
+        ? today.windows.map(function (window) {
+          return window.startUtc.slice(11, 19) + "–" + window.endUtc.slice(11, 19) + " UTC · " + window.durationMin.toFixed(1) + " min";
+        }).join("; ")
+        : r.status === "not-in-view" ? "This satellite cannot be received from these coordinates." : "No geometric window predicted for this UTC day.";
+      $("result-summary").innerHTML = "<p class='result-date'>" + escapeHtml(r.nowUtc.slice(0, 10)) +
+        " · UTC day</p><p class='result-window'>" + escapeHtml(windowText) +
+        "</p><p>At the last check: " + (r.status === "not-in-view" ? "satellite not in view." : r.nowGeometry.impacted ? "Sun inside the modeled receive beam." : "Sun outside the modeled receive beam.") +
+        "</p><p class='notes'>Windows are limited to this UTC day. Geometric estimate, not a confirmed circuit outage. Check the operator's calculator before scheduling work.</p>";
     }
     if (detailEl) {
       detailEl.innerHTML =
@@ -357,7 +478,7 @@
         "<div><dt>3 dB beamwidth</dt><dd>" +
         r.beamwidthDeg.toFixed(2) +
         "°</dd></div>" +
-        "<div><dt>Outage radius</dt><dd>" +
+        "<div><dt>Interference radius</dt><dd>" +
         r.outageRadiusDeg.toFixed(2) +
         "° (½ beam + 0.25° solar radius)</dd></div>" +
         "<div><dt>Sun now</dt><dd>az " +
@@ -394,7 +515,7 @@
     if (tableEl) {
       var rows = r.nearbyWindows || [];
       if (!rows.length) {
-        tableEl.innerHTML = "<p class='muted'>No additional geometric windows in the scanned equinox neighbourhood.</p>";
+        tableEl.innerHTML = "<p class='muted'>No additional geometric windows in the scanned equinox period.</p>";
       } else {
         tableEl.innerHTML =
           "<table class='windows'><caption>Nearby geometric windows (UTC)</caption><thead><tr><th>Date</th><th>Start</th><th>End</th><th>Duration</th></tr></thead><tbody>" +
@@ -483,17 +604,18 @@
   }
 
   function bindForm() {
-    ["site-lat", "site-lon", "ant-d", "band", "site-name", "freq", "carrier"].forEach(function (id) {
+    FORM_FIELDS.forEach(function (id) {
       var el = $(id);
       if (!el) return;
+      el.addEventListener("input", function () {
+        if (id === "site-name" || id === "site-lat" || id === "site-lon" || id === "hemisphere") cancelLookup();
+        if ((id === "site-name" || id === "site-lat" || id === "site-lon") && $("site-preset")) $("site-preset").value = "";
+        invalidateResult();
+        try { readForm(false); } catch (err) { showFormError(err); }
+      });
       el.addEventListener("change", function () {
-        try {
-          readForm();
-          refreshInView();
-          runCheck();
-        } catch (e) {
-          runCheck();
-        }
+        if (id === "site-name" || id === "site-lat" || id === "site-lon" || id === "hemisphere") cancelLookup();
+        runCheck();
       });
     });
     var satSel = $("sat-select");
@@ -508,14 +630,12 @@
       preset.addEventListener("change", function () {
         var i = parseInt(preset.value, 10);
         if (!isFinite(i) || !PRESETS[i]) return;
+        cancelLookup();
         var p = PRESETS[i];
         $("site-name").value = p.name;
         $("site-lat").value = String(p.lat);
         $("site-lon").value = String(p.lon);
-        try {
-          readForm();
-        } catch (e) {}
-        refreshInView();
+        if ($("hemisphere")) $("hemisphere").value = "auto";
         runCheck();
       });
     }
@@ -532,6 +652,13 @@
         }
       });
     }
+  }
+
+  function cancelLookup() {
+    stationRevision++;
+    if (lookupAbort) lookupAbort.abort();
+    if ($("site-lookup")) $("site-lookup").disabled = false;
+    if ($("lookup-status")) $("lookup-status").textContent = "";
   }
 
   function pinKey(site) {
@@ -562,11 +689,11 @@
         " · " +
         Math.abs(lat).toFixed(4) +
         "°" +
-        (lat < 0 ? "S" : "N") +
+        (lat < 0 ? "S" : lat > 0 ? "N" : " (Equator)") +
         "  " +
         Math.abs(lon).toFixed(4) +
         "°" +
-        (lon < 0 ? "W" : "E");
+        (lon < 0 ? "W" : lon > 0 ? "E" : "");
     }
     var key = pinKey(state.site);
     if (key !== lastPinKey) {
@@ -625,32 +752,46 @@
     if (el) el.innerHTML = "<p class='muted'>Loading weather…</p>";
     if (wxAbort && typeof wxAbort.abort === "function") wxAbort.abort();
     wxAbort = typeof AbortController === "function" ? new AbortController() : null;
-    var opts = wxAbort ? { signal: wxAbort.signal } : {};
-    fetch(url, opts)
-      .then(function (res) {
-        if (!res.ok) throw new Error("Open-Meteo HTTP " + res.status);
-        return res.json();
-      })
+    var revision = ++weatherRevision;
+    state.weather = null;
+    return fetchPlaceJson(url, wxAbort)
       .then(function (json) {
+        if (revision !== weatherRevision) return;
         var wx = SitePlace.parseWeather(json);
         state.weather = wx;
         if (!wx) throw new Error("Open-Meteo returned no current observation.");
         renderWeather(wx, null);
       })
       .catch(function (err) {
-        if (err && err.name === "AbortError") return;
+        if (revision !== weatherRevision) return;
         state.weather = null;
         renderWeather(null, "Weather unavailable: " + (err && err.message ? err.message : String(err)));
       });
   }
 
+  function fetchPlaceJson(url, controller) {
+    var timer;
+    var request = fetch(url, controller ? { signal: controller.signal } : {}).then(function (res) {
+      if (!res.ok) throw new Error("Service returned HTTP " + res.status + ".");
+      return res.json();
+    });
+    var timeout = new Promise(function (_, reject) {
+      timer = setTimeout(function () {
+        reject(new Error("Request timed out."));
+        if (controller) controller.abort();
+      }, 8000);
+    });
+    return Promise.race([request, timeout]).finally(function () { clearTimeout(timer); });
+  }
+
   function lookupPlace() {
     if (typeof SitePlace === "undefined") return;
+    cancelLookup();
     var nameEl = $("site-name");
     var q = nameEl && nameEl.value ? nameEl.value.trim() : "";
-    var label = $("place-label");
+    var label = $("lookup-status");
     if (q.length < 2) {
-      if (label) label.textContent = "Type a place name, then Look up — or enter latitude and longitude.";
+      if (label) label.textContent = "Enter at least two characters, then Look up. You can also enter coordinates directly.";
       return;
     }
     if (!SitePlace.canFetch()) {
@@ -658,34 +799,41 @@
       return;
     }
     var url = SitePlace.geocodeUrl(q);
-    fetch(url)
-      .then(function (res) {
-        if (!res.ok) throw new Error("Geocode HTTP " + res.status);
-        return res.json();
-      })
+    var revision = stationRevision;
+    lookupAbort = typeof AbortController === "function" ? new AbortController() : null;
+    if (label) label.textContent = "Looking up " + q + "…";
+    if ($("site-lookup")) $("site-lookup").disabled = true;
+    invalidateResult("Looking up the station. The estimate will update after a confirmed match.");
+    return fetchPlaceJson(url, lookupAbort)
       .then(function (json) {
+        if (revision !== stationRevision) return;
         var hit = SitePlace.parseGeocode(json);
         if (!hit) throw new Error("No match for “" + q + "”.");
+        if (!isFinite(hit.lat) || !isFinite(hit.lon) || Math.abs(hit.lat) > 90 || Math.abs(hit.lon) > 180) throw new Error("The service returned invalid coordinates.");
         if (nameEl) nameEl.value = hit.name;
         if ($("site-lat")) $("site-lat").value = String(hit.lat);
         if ($("site-lon")) $("site-lon").value = String(hit.lon);
         var preset = $("site-preset");
         if (preset) preset.value = "";
-        readForm();
-        refreshInView();
+        if ($("hemisphere")) $("hemisphere").value = "auto";
         runCheck();
+        if (label) label.textContent = "Found " + hit.name + ". Confirm the coordinates match your station.";
       })
       .catch(function (err) {
+        if (revision !== stationRevision) return;
+        invalidateResult("Lookup unavailable. Enter coordinates manually or choose a preset.");
         if (label) {
-          label.textContent = "Look up failed: " + (err && err.message ? err.message : String(err));
+          label.textContent = "Lookup unavailable: " + (err && err.message ? err.message : String(err)) + " Enter coordinates manually or choose a preset.";
         }
+      }).finally(function () {
+        if (revision === stationRevision && $("site-lookup")) $("site-lookup").disabled = false;
       });
   }
 
   function fillPresets() {
     var sel = $("site-preset");
     if (!sel) return;
-    sel.innerHTML = PRESETS.map(function (p, i) {
+    sel.innerHTML = "<option value=''>Custom coordinates</option>" + PRESETS.map(function (p, i) {
       return "<option value='" + i + "'" + (i === 0 ? " selected" : "") + ">" + escapeHtml(p.name) + "</option>";
     }).join("");
   }
@@ -693,17 +841,12 @@
   function renderCatalogMeta() {
     var el = $("catalog-meta");
     if (!el || !state.catalog) return;
-    var src = state.loadMeta && state.loadMeta.source ? state.loadMeta.source : "snapshot";
     var live = state.loadMeta && state.loadMeta.live;
     el.textContent =
-      "Catalog " +
-      state.catalog.fetchedAt +
-      " · " +
       state.catalog.count +
-      " GEO · " +
-      src +
-      (live ? " (live Celestrak)" : " (bundled snapshot)") +
-      (state.loadMeta && state.loadMeta.error ? " · live refresh failed: " + state.loadMeta.error : "");
+      " GEO satellites · " +
+      (live ? "live Celestrak" : "bundled snapshot") + " · " + state.catalog.fetchedAt.slice(0, 10) +
+      (state.loadMeta && state.loadMeta.error ? " · live refresh unavailable" : "");
   }
 
   function dumpSources() {
@@ -734,7 +877,7 @@
     var attemptLive = typeof GeoCatalog !== "undefined" && GeoCatalog.canAttemptLive();
     var loader =
       typeof GeoCatalog !== "undefined"
-        ? GeoCatalog.loadCatalog({ attemptLive: attemptLive })
+        ? GeoCatalog.loadCatalog({ attemptLive: false })
         : Promise.reject(new Error("catalog module missing"));
 
     return loader
@@ -747,6 +890,21 @@
         var sat = findSatByName(first.name) || defaultSatellite(state.inView);
         applySelection(sat, first.key, first.band);
         updatePlace();
+        if (attemptLive) {
+          GeoCatalog.loadCatalog({ attemptLive: true }).then(function (fresh) {
+            if (fresh.live) {
+              pendingCatalog = fresh;
+              var metaEl = $("catalog-meta");
+              if (metaEl) metaEl.textContent += " · refreshed catalog ready for the next calculation";
+            } else {
+              state.loadMeta = fresh;
+              renderCatalogMeta();
+            }
+          }).catch(function () {
+            var metaEl = $("catalog-meta");
+            if (metaEl) metaEl.textContent += " · live refresh unavailable; using snapshot";
+          });
+        }
         return state;
       })
       .catch(function (err) {

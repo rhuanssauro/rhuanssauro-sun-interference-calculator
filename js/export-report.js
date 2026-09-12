@@ -43,7 +43,7 @@
   function fmtLat(lat) {
     var n = Number(lat);
     if (!isFinite(n)) return "—";
-    return Math.abs(n).toFixed(4) + "°" + (n < 0 ? "S" : "N");
+    return Math.abs(n).toFixed(4) + "°" + (n < 0 ? "S" : n > 0 ? "N" : "");
   }
 
   function hms(iso) {
@@ -103,7 +103,8 @@
       site: {
         name: site.name || "Remote site",
         lat: site.lat,
-        lon: site.lon
+        lon: site.lon,
+        hemisphere: typeof site.lat !== "number" || !isFinite(site.lat) || Math.abs(site.lat) > 90 ? "Unknown" : site.lat > 0 ? "Northern hemisphere" : site.lat < 0 ? "Southern hemisphere" : "Equator"
       },
       satellite: {
         name: sat.displayName || sat.name || "—",
@@ -143,6 +144,7 @@
       ["site", data.site.name],
       ["latitude_deg", data.site.lat],
       ["longitude_deg_east", data.site.lon],
+      ["hemisphere", data.site.hemisphere],
       ["satellite", data.satellite.name],
       ["satellite_longitude_deg_east", data.satellite.lon],
       ["operator", data.satellite.operator],
@@ -193,7 +195,7 @@
       );
     }
     return (
-      "<table><caption>Geometric sun-transit windows (UTC)</caption>" +
+      '<div class="table-scroll" role="region" aria-label="Geometric windows" tabindex="0"><table><caption>Geometric sun-transit windows (UTC)</caption>' +
       "<thead><tr><th>Date</th><th>Start</th><th>End</th><th>Duration</th></tr></thead><tbody>" +
       rows
         .map(function (w) {
@@ -210,28 +212,25 @@
           );
         })
         .join("") +
-      "</tbody></table>"
+      "</tbody></table></div>"
     );
   }
 
   /**
    * Standalone printable report. Paper/ink palette with the brand amber,
    * print CSS included so the same document is the PDF path
-   * (browser print-to-PDF). opts.logoDataUri embeds the Tech Inc
-   * watermark so the file works detached from the app, including file://.
+   * (browser print-to-PDF). The inline claw and live wordmark keep branding
+   * crisp and self-contained when detached from the app, including file://.
    */
-  function toHtmlReport(data, opts) {
-    opts = opts || {};
+  function toHtmlReport(data) {
     var p = data.params || {};
-    var logo = opts.logoDataUri
-      ? '<img class="watermark" src="' +
-        esc(opts.logoDataUri) +
-        '" alt="' +
-        esc(BRAND) +
-        " — " +
-        BRAND_LINE +
-        '">'
-      : "";
+    var logo =
+      '<div class="watermark"><span class="watermark-name"><svg viewBox="0 0 34 34" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">' +
+      '<g fill="currentColor">' +
+      '<path d="M7 3 C 11 12, 11 23, 5 33 C 2 23, 3 12, 7 3 Z" transform="rotate(-13 6 18)"></path>' +
+      '<path d="M17 2 C 21 12, 21 23, 16 33 C 12 23, 13 12, 17 2 Z"></path>' +
+      '<path d="M27 3 C 31 12, 31 23, 25 33 C 22 23, 23 12, 27 3 Z" transform="rotate(13 26 18)"></path>' +
+      '</g></svg><strong>' + esc(BRAND) + '</strong></span><small>' + esc(BRAND_LINE) + '</small></div>';
     var freq =
       p.frequencyGHz != null
         ? (p.frequencyGHz * 1e3).toFixed(1) + " MHz (" + p.frequencyGHz.toFixed(4) + " GHz)"
@@ -250,39 +249,35 @@
       "</title>\n<style>\n" +
       ":root { color-scheme: light; }\n" +
       "body { margin: 2rem auto; max-width: 52rem; padding: 0 1rem; background: #fff; color: #1c1917;\n" +
-      '  font: 16px/1.55 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; }\n' +
+      '  font: 16px/1.55 "Segoe UI", system-ui, sans-serif; overflow-wrap: anywhere; }\n' +
       "header { border-bottom: 3px solid #b45309; padding-bottom: 0.75rem; margin-bottom: 1.25rem; }\n" +
       "h1 { font-size: 1.4rem; margin: 0 0 0.15rem; letter-spacing: -0.01em; }\n" +
-      ".brand { font-weight: 700; letter-spacing: 0.04em; }\n" +
-      ".brand-line { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.7rem;\n" +
-      "  letter-spacing: 0.18em; color: #57534e; text-transform: lowercase; }\n" +
       ".stamp, td, th, dd { font-variant-numeric: tabular-nums; }\n" +
       ".stamp { font-family: ui-monospace, Menlo, Consolas, monospace; color: #57534e; font-size: 0.85rem; }\n" +
-      ".verdict { border-left: 4px solid #b45309; background: #f5f5f4; padding: 0.7rem 1rem;\n" +
+      ".verdict { border: 1px solid #b45309; background: #f5f5f4; padding: 0.7rem 1rem;\n" +
       "  font-weight: 600; margin: 1rem 0; }\n" +
       'dl { display: grid; grid-template-columns: 14rem 1fr; gap: 0.3rem 1rem; margin: 1rem 0; }\n' +
       "dt { color: #57534e; } dd { margin: 0; font-family: ui-monospace, Menlo, Consolas, monospace; }\n" +
       "table { border-collapse: collapse; width: 100%; margin: 1rem 0;\n" +
       "  font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9rem; }\n" +
       "caption { text-align: left; font-weight: 600; margin-bottom: 0.4rem;\n" +
-      '  font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; }\n' +
+      '  font-family: "Segoe UI", system-ui, sans-serif; }\n' +
       "th, td { text-align: left; border-bottom: 1px solid #d6d3d1; padding: 0.35rem 0.5rem; }\n" +
       "thead th { border-bottom: 2px solid #b45309; }\n" +
       ".empty { color: #57534e; }\n" +
+      ".table-scroll { overflow-x: auto; } .table-scroll:focus-visible { outline: 2px solid #b45309; outline-offset: 3px; }\n" +
+      "@media (max-width: 600px) { dl { grid-template-columns: 1fr; gap: 0.15rem; } dd { margin-bottom: 0.75rem; } table { min-width: 26rem; } }\n" +
       "footer { margin-top: 1.5rem; border-top: 1px solid #d6d3d1; padding-top: 0.75rem;\n" +
       "  color: #57534e; font-size: 0.85rem; }\n" +
-      ".watermark { display: block; width: 100%; max-width: 36rem; height: auto; margin-top: 0.75rem;\n" +
-      "  background: #1c1917; padding: 0.5rem 0.75rem; border-radius: 6px; box-sizing: border-box;\n" +
-      "  -webkit-print-color-adjust: exact; print-color-adjust: exact; }\n" +
-      "@media print { body { margin: 0.5in auto; } .verdict { break-inside: avoid; }\n" +
+      ".watermark { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem 1rem; margin-top: 0.75rem; break-inside: avoid; }\n" +
+      ".watermark-name { display: inline-flex; align-items: center; gap: 0.4rem; }\n" +
+      ".watermark svg { flex: none; color: #2e6b3d; }\n" +
+      ".watermark strong { color: #292524; font-size: 0.75rem; }\n" +
+      ".watermark small { font-size: 0.625rem; letter-spacing: 0.08em; }\n" +
+      "@media print { body { margin: 0.5in auto; } .verdict { break-inside: avoid; } .table-scroll { overflow: visible; }\n" +
       "  table { break-inside: avoid; } }\n" +
       "</style>\n</head>\n<body>\n" +
       "<header>\n" +
-      '<div class="brand">' +
-      esc(BRAND) +
-      '</div><div class="brand-line">' +
-      esc(BRAND_LINE) +
-      "</div>\n" +
       "<h1>Sun Interference — geometric sun-transit report</h1>\n" +
       '<div class="stamp">Generated ' +
       esc((data.generatedUtc || "").replace("T", " ")) +
@@ -301,6 +296,7 @@
       " " +
       esc(fmtLon(data.site.lon)) +
       "</dd>\n" +
+      "<dt>Hemisphere</dt><dd>" + esc(data.site.hemisphere) + "</dd>\n" +
       "<dt>Satellite</dt><dd>" +
       esc(data.satellite.name) +
       " · " +
@@ -340,8 +336,7 @@
       "\n<footer>\n<p>" +
       esc(data.disclaimer) +
       "</p>\n<p>" +
-      esc(BRAND) +
-      " · MIT-licensed geometric checker · not affiliated with any satellite operator.</p>\n" +
+      "MIT-licensed geometric checker · not affiliated with any satellite operator.</p>\n" +
       logo +
       "\n</footer>\n</body>\n</html>\n"
     );

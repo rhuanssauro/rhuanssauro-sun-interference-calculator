@@ -48,6 +48,15 @@ test("styles are OKLCH and not cream-SaaS", function () {
   assert.equal(/oklch\(0\.9[0-9].*7[0-9]/.test(css), false);
 });
 
+test("brand and focused skip links keep 44px minimum targets", function () {
+  var wordmark = css.match(/\.wordmark\s*\{([^}]+)\}/)[1];
+  var skip = css.match(/\.skip:focus\s*\{([^}]+)\}/)[1];
+  assert.match(wordmark, /min-height:\s*44px/);
+  assert.match(skip, /min-height:\s*44px/);
+  assert.match(skip, /display:\s*inline-flex/);
+  assert.match(skip, /align-items:\s*center/);
+});
+
 test("header has a live UTC clock plus a separate last-check stamp", function () {
   assert.match(html, /id="utc-clock"/);
   assert.match(html, /UTC now/);

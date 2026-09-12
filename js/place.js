@@ -51,7 +51,9 @@
     var a = fmtCoord(lat, 5);
     var o = fmtCoord(lon, 5);
     if (!a || !o) return "";
-    return "https://www.google.com/maps/embed?origin=mfe&pb=!1m2!2m1!1s" + a + "," + o;
+    // Google's Share > Embed format includes both the camera and coordinate marker.
+    return "https://www.google.com/maps/embed?origin=mfe&pb=!1m17!1m12!1m3!1d3689!2d" + o + "!3d" + a +
+      "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s" + a + "," + o + "!5e0!3m2!1sen!2sbr";
   }
 
   function mapsOpenUrl(lat, lon) {
