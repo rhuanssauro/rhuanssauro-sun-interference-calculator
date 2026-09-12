@@ -131,6 +131,10 @@ a:hover {
 }
 
 .skip:focus {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 44px;
   left: var(--space-4);
   top: var(--space-4);
   z-index: 40;
@@ -149,6 +153,7 @@ a:hover {
 .wordmark {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   gap: 0.7rem;
   margin: 0;
   text-decoration: none;
