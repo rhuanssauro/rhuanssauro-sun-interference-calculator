@@ -1,12 +1,21 @@
 # Rhuanssauro - Sun Interference Calculator
 
-![A geostationary communications satellite over South America. Solar arrays are lit. The Sun sits behind the bus, the same geometry that produces sun transit.](docs/geo-hero.jpg)
+![Illustrative communications satellite above South America, not to scale.](assets/orbital-header.webp)
 
 A receiving earth station looking at a geostationary satellite will, twice a year, see the Sun walk into the same line of sight. The dish cannot tell solar thermal noise from the intended carrier. Operators call that sun interference, sun transit, sun fade, or sun outage. This calculator tells you whether a given remote, dish, band, and bird is in that geometry, and if so, when.
 
 The default example site is Macaé, Rio de Janeiro, Brazil. Favorites sit at the top of the satellite list: Intelsat 37e (C and Ku), Telesat T-19, Hispasat H36W, and Intelsat 10-02. Every other Clarke-belt object in view of the site remains selectable.
 
-## The v1.1 dashboard
+## Orbital workspace
+
+The receiving-station form now precedes the full catalog. A compact space header, optional RF settings, readable UTC results and an alignment schematic support both engineers and newcomers. All imagery is static; the application still has no runtime dependencies or build step. [Asset provenance](assets/SOURCES.md) records the ChatGPT Pro, Higgsfield and Blender workflows and the image-version metadata caveat.
+
+Choose **Auto from latitude**, **Northern Hemisphere**, or **Southern Hemisphere** for the ground station. Signed latitude remains authoritative; a contradictory choice blocks calculation and export rather than moving the station. Presets and successful place lookups reset Auto. Edited inputs invalidate the previous report until recalculation.
+
+The bundled catalog is usable immediately. A completed live refresh is applied at the next valid calculation, without silently changing the current report. Current solar alignment is labelled separately from today's predicted windows, including separate segments at UTC midnight.
+
+<details>
+<summary>Historical v1.1 screenshots and packaging</summary>
 
 Version 1.1 is the first public packaging. Three things landed on top of the geometry: a live **UTC now** ticker next to the **Last check** stamp, a **Dark / Light / System** theme control in the header, and branded **CSV / HTML / PDF** export chips on the verdict. Details in [Clock, theme, and export](#clock-theme-and-export) and the [changelog](CHANGELOG.md).
 
@@ -18,11 +27,13 @@ Version 1.1 is the first public packaging. Three things landed on top of the geo
 
 *Light — paper/ink for a lit ops room, same solar amber. The **CSV / HTML / PDF** chips above the verdict export the current prediction as a branded report; all three run client-side.*
 
-The older walkthrough shot below still matches the flow — receive Frequency field, Google Map pin on the remote, weather at site:
+The historical walkthrough below shows the previous layout. Dates and predictions are examples, not current results:
 
 ![Impact checker on Intelsat 37e C-band at Macaé: receive Frequency field, Google Map pin on the remote, weather at site, geometric sun-transit 12:51–12:57 UTC on 10 September 2026.](docs/dashboard-frequency-map.png)
 
 Example on the page: **Intelsat 37e (C-Band)** at 18.0°W, **Macaé, RJ** (−22.37°, −41.79°), **2.4 m** dish, **C (3.95 GHz)**. There is one **Frequency** field (receive only — no inbound/TX). Verdict is **Impacted**, geometric sun-transit **12:51:00Z–12:57:00Z (6.0 min)** on 10 September 2026. The Google Map under the checker pins that latitude/longitude; weather at the pin is Open-Meteo and does not change the window.
+
+</details>
 
 ## What sun interference is
 
@@ -82,28 +93,26 @@ You need a current browser (Chrome, Firefox, Safari, or Edge). Python 3.9 or new
 
 ## Usage
 
-Same path as the screenshot.
-
 1. Open the page (install below, or double-click `index.html`).
-2. **Satellite** — Favorites first. Pick **Intelsat 37e (C-Band)** for the example above. The other pins are Intelsat 37e Ku, Telesat T-19, Hispasat H36W, and Intelsat 10-02. The rest of the belt in view of the site is in the same list.
-3. **Site** — keep **Macaé, RJ**, or type another remote. Latitude is south-negative. Longitude is east-positive (Macaé is −41.79).
-4. **Antenna diameter** — 2.4 m in the example. Smaller dishes stay in the beam longer.
-5. **Band / Frequency** — C, Ku, or Ka sets the beamwidth default. If you know the actual receive frequency, type it; that replaces the band centre in θ₃dB = 70 λ / D. There is no inbound/TX field: sun interference at this dish is receive-only. Carrier size is stored with the circuit and does not move the geometric window.
-6. **Check sun transit**. Impacted means the solar disk is inside the receive 3 dB beam at this epoch. The table is UTC start, UTC end, and duration for the days that still have a window. Not in view means the bird is below the local horizon. Out of season means no window in either equinox neighbourhood.
-7. **Earth station map** — the Google Map below the checker pins the latitude / longitude you entered. **Look up** on the remote-site field geocodes a place name (Open-Meteo) and writes the coordinates. Weather at that pin is Open-Meteo current conditions. It does not change the geometric window.
+2. Choose a **Station preset**, use **Find place**, or enter signed decimal coordinates. South latitude and west longitude are negative.
+3. Choose the **Ground station hemisphere**, or keep **Auto from latitude**. Latitude zero is the Equator.
+4. Select a **Satellite**, then enter the receiving dish diameter and band. Favorites are listed first; all other satellites in view remain available.
+5. Expand **Optional RF settings** when needed. Enter 3.95 for GHz or 3950 for MHz; carrier 36 means MHz. Enter numbers without unit suffixes. Carrier size is recorded but does not alter the geometry.
+6. Select **Calculate interference windows**. The result describes today's UTC windows and the alignment at the last check separately. A predicted window is not a confirmed circuit outage. Nearby rows include past and upcoming dates; midnight segments are separate rows.
+7. Confirm the map pin and review weather. Save the validated report as CSV, HTML or PDF. Changing inputs disables the previous exports until recalculation.
 
-The Clarke-belt chips above the form are the same catalog. Click a chip or pick from the list; both drive the checker. Map and weather need a network path (`python3 serve.py`); they stay quiet on `file://`.
+The full Clarke belt is in **Explore satellites in view** below the calculator. Catalog chips and the select drive the same checker. Map, weather and place lookup require a network path; manual calculation still works without those services.
 
 ## Clock, theme, and export
 
-**UTC clock.** The header shows two stamps. **UTC now** is a live ticker (about once a second, with milliseconds). **Last check** is the epoch the geometry was actually evaluated at — it updates when you press **Check sun transit** or change an input, so the verdict and the stamp always agree. The catalog line underneath stays the Celestrak fetch stamp; it is not a clock.
+**UTC clock.** The strip below the header shows **UTC now**, a live ticker about once a second. **Last check**, below the results, records when the displayed geometry was evaluated. It updates after a valid calculation. The catalog stamp describes the orbital data, not the current time.
 
 **Dark / Light / System.** The segmented control in the header switches the theme: dark is the night-shift default, light is a paper/ink palette with the same solar amber and lock cyan, and System follows the OS preference. The choice persists in `localStorage` and is applied via `data-theme` on `<html>`.
 
-**Export.** After a check, the CSV / HTML / PDF chips above the verdict export the current prediction — site, satellite, band, diameter, frequency, carrier, verdict, and the geometric windows (date, UTC start, UTC end, duration), plus a disclaimer that this is angles-only geometry and should be padded and re-verified with the operator's own calculator.
+**Export.** After a valid check, the CSV / HTML / PDF buttons below the result export the station, actual coordinate hemisphere, satellite, RF parameters, verdict and geometric windows, plus the estimate's limits. HTML and PDF use the same standalone report.
 
 - **CSV** downloads the window rows with the parameters as `#` comment lines on top.
-- **HTML** downloads a standalone branded Rhuanssauro Tech Inc report (the watermark is embedded, so the file works detached and on `file://`).
+- **HTML** downloads a standalone branded Rhuanssauro Tech Inc report. Its compact claw and live-text footer sit on the white page; inline SVG keeps the watermark crisp and self-contained, including on `file://`.
 - **PDF** opens the same report in a new window and hands it to the browser print dialog — pick "Save as PDF". Allow pop-ups for the page if nothing opens.
 
 All three run client-side with no server and no build step.

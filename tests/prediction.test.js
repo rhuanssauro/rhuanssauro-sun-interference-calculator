@@ -157,3 +157,49 @@ test("checkInterference returns a non-empty owner-style verdict string", functio
   );
   assert.ok(["impacted", "not-impacted", "not-in-view", "out-of-season"].indexOf(r.status) >= 0);
 });
+
+test("daily summary and nearby table agree without confusing a past window with current alignment", function () {
+  var opts = { lat: -22.37, lon: -41.79, satLon: -18, diameterM: 2.4, bandOrGhz: "C", now: new Date("2026-09-12T18:00:00Z") };
+  var r = ST.checkInterference(opts);
+  var day = r.nearbyWindows.find(function (w) { return w.date === "2026-09-12"; });
+  assert.ok(day);
+  assert.equal(r.today.startUtc, day.startUtc);
+  assert.equal(r.today.endUtc, day.endUtc);
+  assert.equal(r.today.durationMin, day.durationMin);
+  assert.equal(r.impacted, true);
+  assert.equal(r.nowGeometry.impacted, false);
+  assert.match(r.verdict, /predicted.*2026-09-12|estimated.*2026-09-12/i);
+  opts.now = new Date("2026-09-20T18:00:00Z");
+  var later = ST.checkInterference(opts);
+  assert.ok(later.nearbyWindows.length);
+  assert.doesNotMatch(later.verdict, /Next geometric window 2026-09-1/);
+  opts.lat = 0;
+  assert.match(ST.checkInterference(opts).notes[0], /Equator/);
+});
+
+test("UTC-day windows stay on their labelled day on both sides of the date line", function () {
+  [[170, 179], [-170, -179]].forEach(function (position) {
+    var r = ST.checkInterference({ lat: 0, lon: position[0], satLon: position[1], diameterM: 2.4, bandOrGhz: "C", now: new Date("2026-09-22T12:00:00Z") });
+    assert.equal(r.today.impacted, true);
+    assert.equal(r.today.startUtc.slice(0, 10), "2026-09-22");
+    assert.equal(r.today.endUtc.slice(0, 10), "2026-09-22");
+    r.nearbyWindows.forEach(function (w) {
+      assert.equal(w.startUtc.slice(0, 10), w.date);
+      assert.equal(w.endUtc.slice(0, 10), w.date);
+    });
+  });
+});
+
+test("separate midnight-edge windows are retained without merging a day-long outage", function () {
+  var now = new Date("2026-09-22T23:59:45Z");
+  var r = ST.checkInterference({ lat: 0, lon: 170, satLon: 176, diameterM: 2.4, bandOrGhz: "C", now: now });
+  assert.equal(r.nowGeometry.impacted, true);
+  assert.equal(r.today.windows.length, 2);
+  assert.equal(r.today.windows[0].startUtc, "2026-09-22T00:00:00.000Z");
+  assert.equal(r.today.windows[1].endUtc, "2026-09-22T23:59:45.000Z");
+  var rows = r.nearbyWindows.filter(function (w) { return w.date === "2026-09-22"; });
+  assert.equal(rows.length, 2);
+  rows.forEach(function (w) { assert.ok(w.durationMin < 15); });
+  assert.match(r.verdict, /00:00:00Z/);
+  assert.match(r.verdict, /23:59:45Z/);
+});

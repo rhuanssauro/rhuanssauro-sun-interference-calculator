@@ -24,6 +24,12 @@ test("Google Maps open link uses the official search URL", function () {
   assert.match(url, /query=-22\.37000%2C-41\.79000/);
 });
 
+test("coordinate embed includes the station marker and camera, not only a map search context", function () {
+  var url = Place.mapsEmbedUrl(4.711, -74.0721);
+  assert.match(url, /!2d-74\.07210!3d4\.71100/);
+  assert.match(url, /!3m2!1m1!2s4\.71100,-74\.07210!5e0/);
+});
+
 test("Open-Meteo weather and geocode URLs are keyless", function () {
   var w = Place.weatherUrl(-22.37, -41.79);
   assert.match(w, /^https:\/\/api\.open-meteo\.com\/v1\/forecast\?/);
