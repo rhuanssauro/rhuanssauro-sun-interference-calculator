@@ -1,18 +1,7 @@
 # Rhuanssauro - Sun Interference Calculator
 
-![Illustrative communications satellite above South America, not to scale.](assets/orbital-header.webp)
 
-A receiving earth station looking at a geostationary satellite will, twice a year, see the Sun walk into the same line of sight. The dish cannot tell solar thermal noise from the intended carrier. Operators call that sun interference, sun transit, sun fade, or sun outage. This calculator tells you whether a given remote, dish, band, and bird is in that geometry, and if so, when.
 
-The default example site is Macaé, Rio de Janeiro, Brazil. Favorites sit at the top of the satellite list: Intelsat 37e (C and Ku), Telesat T-19, Hispasat H36W, and Intelsat 10-02. Every other Clarke-belt object in view of the site remains selectable.
-
-## Orbital workspace
-
-The receiving-station form now precedes the full catalog. A compact space header, optional RF settings, readable UTC results and an alignment schematic support both engineers and newcomers. All imagery is static; the application still has no runtime dependencies or build step. [Asset provenance](assets/SOURCES.md) records the ChatGPT Pro, Higgsfield and Blender workflows and the image-version metadata caveat.
-
-Choose **Auto from latitude**, **Northern Hemisphere**, or **Southern Hemisphere** for the ground station. Signed latitude remains authoritative; a contradictory choice blocks calculation and export rather than moving the station. Presets and successful place lookups reset Auto. Edited inputs invalidate the previous report until recalculation.
-
-The bundled catalog is usable immediately. A completed live refresh is applied at the next valid calculation, without silently changing the current report. Current solar alignment is labelled separately from today's predicted windows, including separate segments at UTC midnight.
 
 <details>
 <summary>Historical v1.1 screenshots and packaging</summary>
