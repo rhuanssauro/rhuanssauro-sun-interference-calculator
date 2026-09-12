@@ -5,7 +5,6 @@ var assert = require("node:assert/strict");
 var path = require("path");
 var SunExport = require(path.join(__dirname, "..", "js", "export-report.js"));
 var ST = require(path.join(__dirname, "..", "js", "sun-transit.js"));
-var Brand = require(path.join(__dirname, "..", "assets", "watermark-data.js"));
 
 function fixtureInput() {
   return {
@@ -104,7 +103,7 @@ test("CSV without windows still exports params and a note", function () {
 
 test("HTML report is standalone, branded, escaped, and printable", function () {
   var data = SunExport.buildReportData(fixtureInput());
-  var html = SunExport.toHtmlReport(data, { logoDataUri: Brand.watermarkDataUri });
+  var html = SunExport.toHtmlReport(data);
   assert.match(html, /^<!DOCTYPE html>/);
   assert.match(html, /Rhuanssauro Tech Inc/);
   assert.match(html, /a datacenter in the jungle/);
@@ -115,7 +114,7 @@ test("HTML report is standalone, branded, escaped, and printable", function () {
   assert.match(html, /6\.0 min/);
   assert.match(html, /Geometric estimate only\./);
   assert.match(html, /@media print/);
-  assert.match(html, /data:image\/png;base64,/);
+  assert.match(html, /<div class="watermark">/);
   assert.equal(/<script/i.test(html), false, "report must carry no scripts");
   // No operator branding in ours: cited method names are fine, logos are not.
   assert.equal(/myintelsat|ses\.com|intelsat\.com/i.test(html), false);
@@ -144,7 +143,47 @@ test("export filenames are slugged and dated per format", function () {
   assert.equal(SunExport.slugify(""), "report");
 });
 
-test("bundled watermark is a PNG data URI for detached reports", function () {
-  assert.equal(typeof Brand.watermarkDataUri, "string");
-  assert.match(Brand.watermarkDataUri, /^data:image\/png;base64,[A-Za-z0-9+/=]+$/);
+test("detached reports carry a native claw and live footer wordmark without image resources", function () {
+  var data = SunExport.buildReportData(fixtureInput());
+  var html = SunExport.toHtmlReport(data);
+  var body = html.match(/<body>([\s\S]+?)<\/body>/)[1];
+  var signature = html.match(/<div class="watermark">([\s\S]+?)<\/footer>/)[1];
+  assert.equal((body.match(/Rhuanssauro Tech Inc/g) || []).length, 1);
+  assert.equal((body.match(/a datacenter in the jungle/g) || []).length, 1);
+  assert.equal((body.match(/<footer>/g) || []).length, 1);
+  assert.match(body, /<header>\s*<h1>/);
+  assert.doesNotMatch(body, /class="brand(?:-line)?"/);
+  assert.match(body, /<p>MIT-licensed geometric checker · not affiliated with any satellite operator\.<\/p>/);
+  assert.match(signature, /<svg[^>]+viewBox="0 0 34 34"[^>]+aria-hidden="true"/);
+  assert.equal((signature.match(/<path /g) || []).length, 3);
+  assert.match(signature, /<strong>Rhuanssauro Tech Inc<\/strong>/);
+  assert.match(signature, /<small>a datacenter in the jungle<\/small>/);
+  assert.doesNotMatch(html, /<(?:img|image|link|script|iframe)\b|\b(?:src|href)=|url\(/i);
+  assert.doesNotMatch(html.match(/\.watermark \{([^}]+)\}/)[1], /background|padding|border/);
+  assert.equal(SunExport.toHtmlReport(data, { logoDataUri: "data:image/png;base64,obsolete" }), html);
+});
+
+test("CSV and printable HTML report the actual coordinate hemisphere including the Equator", function () {
+  [[-22.37, "Southern hemisphere"], [4.711, "Northern hemisphere"], [0, "Equator"]].forEach(function (example) {
+    var input = fixtureInput();
+    input.site.lat = example[0];
+    input.site.hemisphere = "incorrect user label";
+    var data = SunExport.buildReportData(input);
+    assert.equal(data.site.hemisphere, example[1]);
+    assert.match(SunExport.toCsv(data), new RegExp("# hemisphere: " + example[1]));
+    assert.match(SunExport.toHtmlReport(data), new RegExp("<dt>Hemisphere</dt><dd>" + example[1]));
+    if (example[0] === 0) assert.doesNotMatch(SunExport.toHtmlReport(data), /0\.0000°N/);
+  });
+});
+
+test("exports retain both separate interference windows at the UTC-day boundaries", function () {
+  var input = fixtureInput();
+  input.site = { name: "Date-line station", lat: 0, lon: 170 };
+  input.satellite.lon = 176;
+  input.result = ST.checkInterference({ lat: 0, lon: 170, satLon: 176, diameterM: 2.4, bandOrGhz: "C", now: new Date("2026-09-22T23:59:45Z") });
+  var report = SunExport.buildReportData(input);
+  assert.equal(report.windows.filter(function (w) { return w.date === "2026-09-22"; }).length, 2);
+  assert.match(SunExport.toCsv(report), /2026-09-22,2026-09-22T00:00:00\.000Z/);
+  assert.match(SunExport.toCsv(report), /2026-09-22T23:59:45\.000Z/);
+  assert.match(SunExport.toHtmlReport(report), /23:59:45Z/);
 });
