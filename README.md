@@ -8,7 +8,7 @@ The default example site is Macaé, Rio de Janeiro, Brazil. Favorites sit at the
 
 ## The dashboard
 
-Version 2.0 is the current public packaging: orbital workspace, hemisphere validation, live **UTC now** next to **Last check**, **Dark / Light / System** theme control, and branded **CSV / HTML / PDF** export chips. Details in [Clock, theme, and export](#clock-theme-and-export) and the [changelog](CHANGELOG.md).
+Version 2.0 is the current release: orbital workspace, hemisphere validation, live **UTC now** next to **Last check**, **Dark / Light / System** theme control, and branded **CSV / HTML / PDF** export chips. Details in [Clock, theme, and export](#clock-theme-and-export).
 
 ![Dark theme. Macaé looking at Intelsat 37E (IS-37E), 18.0°W. Header: Dark/Light/System control, live UTC now, Last check stamp, Celestrak catalog line. Verdict: Impacted, geometric sun-transit window, with CSV / HTML / PDF export chips.](docs/dashboard-dark.png)
 
