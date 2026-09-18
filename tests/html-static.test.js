@@ -33,7 +33,9 @@ test("HTML defaults to Macaé and uses a satellite select, not drag-and-drop", f
   assert.equal(/notebooklm\.google\.com/.test(html), false);
   assert.match(html, /Rhuanssauro/);
   assert.match(html, /a datacenter in the jungle/);
-  assert.match(html, /rhuanssauro-tech-watermark-no-background\.png/);
+  assert.equal(/rhuanssauro-tech-watermark-no-background\.png/.test(html), false);
+  assert.equal(/assets\/watermark-data\.js/.test(html), false);
+  assert.match(html, /brand-signature/);
   assert.match(html, /claw-mark/);
   assert.equal(/claw-scratch/.test(html), false);
   assert.equal(/dragstart/.test(app), false);
@@ -84,7 +86,8 @@ test("export chips exist and the export module is wired", function () {
   assert.match(html, /id="export-html"/);
   assert.match(html, /id="export-pdf"/);
   assert.match(html, /js\/export-report\.js/);
-  assert.match(html, /assets\/watermark-data\.js/);
+  assert.equal(/assets\/watermark-data\.js/.test(html), false);
+  assert.equal(/watermarkUri|BrandAssets|logoDataUri/.test(app), false);
   assert.match(app, /SunExport\.toCsv/);
   assert.match(app, /SunExport\.toHtmlReport/);
   assert.match(app, /SunExport\.openPrintableReport/);

@@ -10,6 +10,6 @@ Original assets produced for the Sun Interference calculator on 2026-09-12. Stat
 
 The ChatGPT image metadata exposes software-agent version 2.0 despite the interface's Images 2.5 title. The generation route is verified; the metadata does not independently verify a backend model version. No API-key fallback was used for the header.
 
-Full prompts, provenance, private generation references, Blender source/scene and QA are retained in the local `.agents/` workspace. Original high-resolution masters are not needed by the application. Existing Rhuanssauro watermark assets and claw identity are preserved.
+Original high-resolution masters are not needed by the application. Branding on the page and in exports uses the inline SVG claw and live wordmark.
 
 The three compared 21st directions informed composition only. No React, MapLibre, particle-loop implementation or third-party component source was copied into the runtime. References: [Black Hole Hero Section](https://21st.dev/@yura/components/blackhole-hero-section), [Constellation Grid](https://21st.dev/@daiwiikharihar/components/constellation-grid), [SatelliteOrbit](https://21st.dev/@ridemountainpig/components/flightcn-satellite-orbit).

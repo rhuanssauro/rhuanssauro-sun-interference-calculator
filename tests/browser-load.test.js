@@ -14,7 +14,6 @@ var files = [
   { file: "js/clock.js", global: "UtcClock" },
   { file: "js/theme.js", global: "ThemeControl" },
   { file: "js/export-report.js", global: "SunExport" },
-  { file: "assets/watermark-data.js", global: "BrandAssets" },
   { file: "js/app.js", global: "SunDashboard" }
 ];
 

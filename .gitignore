@@ -22,7 +22,7 @@ venv/
 .vscode/
 *.swp
 
-# AI / agent harnesses — never commit
+# Agent harnesses
 .grok/
 .claude/
 .codex/
@@ -47,8 +47,6 @@ graft/
 tmp/
 scratch/
 
-# Local education artifacts (operator PDFs, generated media)
+# Local-only
 docs/education/
-
-# Test extracts
-social-pack/.last-frames/
+social-pack/

@@ -735,16 +735,37 @@ button.primary:active {
 .brand-bar {
   margin-top: var(--space-6);
   width: 100%;
-  background: var(--brand-bar-bg);
-  border-radius: 8px;
 }
 
-.brand-watermark {
-  display: block;
-  width: 100%;
-  max-width: 720px;
-  height: auto;
-  margin-inline: auto;
+.brand-signature {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  color: var(--muted);
+}
+
+.brand-signature-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ink);
+}
+
+.brand-signature .claw-mark {
+  flex: none;
+  color: #2e6b3d;
+}
+
+.brand-signature strong {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.brand-signature small {
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
 }
 
 main { display: grid; gap: 1.5rem; min-width: 0; }

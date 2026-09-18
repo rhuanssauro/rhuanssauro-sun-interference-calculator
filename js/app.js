@@ -570,10 +570,6 @@
     });
   }
 
-  function watermarkUri() {
-    return typeof BrandAssets !== "undefined" ? BrandAssets.watermarkDataUri : null;
-  }
-
   function bindExports() {
     var csvBtn = $("export-csv");
     var htmlBtn = $("export-html");
@@ -589,7 +585,7 @@
       htmlBtn.addEventListener("click", function () {
         var data = exportData();
         if (!data) return;
-        var html = SunExport.toHtmlReport(data, { logoDataUri: watermarkUri() });
+        var html = SunExport.toHtmlReport(data);
         SunExport.downloadText(SunExport.exportFilename(data, "html"), html, "text/html");
       });
     }
@@ -597,7 +593,7 @@
       pdfBtn.addEventListener("click", function () {
         var data = exportData();
         if (!data) return;
-        var html = SunExport.toHtmlReport(data, { logoDataUri: watermarkUri() });
+        var html = SunExport.toHtmlReport(data);
         SunExport.openPrintableReport(html);
       });
     }

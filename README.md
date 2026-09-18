@@ -1,7 +1,30 @@
 # Rhuanssauro - Sun Interference Calculator
 
+![A geostationary communications satellite over South America. Solar arrays are lit. The Sun sits behind the bus, the same geometry that produces sun transit.](docs/geo-hero.jpg)
 
+A receiving earth station looking at a geostationary satellite will, twice a year, see the Sun walk into the same line of sight. The dish cannot tell solar thermal noise from the intended carrier. Operators call that sun interference, sun transit, sun fade, or sun outage. This calculator tells you whether a given remote, dish, band, and bird is in that geometry, and if so, when.
 
+The default example site is Macaé, Rio de Janeiro, Brazil. Favorites sit at the top of the satellite list: Intelsat 37e (C and Ku), Telesat T-19, Hispasat H36W, and Intelsat 10-02. Every other Clarke-belt object in view of the site remains selectable.
+
+## The dashboard
+
+Version 2.0 is the current public packaging: orbital workspace, hemisphere validation, live **UTC now** next to **Last check**, **Dark / Light / System** theme control, and branded **CSV / HTML / PDF** export chips. Details in [Clock, theme, and export](#clock-theme-and-export) and the [changelog](CHANGELOG.md).
+
+![Dark theme. Macaé looking at Intelsat 37E (IS-37E), 18.0°W. Header: Dark/Light/System control, live UTC now, Last check stamp, Celestrak catalog line. Verdict: Impacted, geometric sun-transit window, with CSV / HTML / PDF export chips.](docs/dashboard-dark.png)
+
+*Dark — the night-shift default. **UTC now** ticks live in the header; **Last check** is the epoch the geometry was actually evaluated at. Intelsat 37e (C-Band) from Macaé is **Impacted**: the solar disk is inside the receive 3 dB beam, time and duration on the right.*
+
+![Light theme. The same Intelsat 37e check from Macaé on the paper/ink palette: theme control on Light, live UTC clock, Impacted verdict, and the CSV / HTML / PDF export chips.](docs/dashboard-light.png)
+
+*Light — paper/ink for a lit ops room, same solar amber. The **CSV / HTML / PDF** chips export the current prediction as a branded report; all three run client-side.*
+
+Walkthrough shots still match the flow — receive Frequency field, Google Map pin on the remote, weather at site:
+
+![Impact checker on Intelsat 37e C-band at Macaé: receive Frequency field, Google Map pin on the remote, weather at site, geometric sun-transit window.](docs/dashboard-frequency-map.png)
+
+![Dashboard preview of the sun interference calculator layout and result panel.](docs/dashboard-preview.png)
+
+Example on the page: **Intelsat 37e (C-Band)** at 18.0°W, **Macaé, RJ** (−22.37°, −41.79°), **2.4 m** dish, **C (3.95 GHz)**. There is one **Frequency** field (receive only — no inbound/TX). The Google Map under the checker pins that latitude/longitude; weather at the pin is Open-Meteo and does not change the window.
 
 ## What sun interference is
 
@@ -126,10 +149,6 @@ npm run catalog
 ```
 
 `npm run catalog` rebuilds `data/geo-snapshot.json` from `data/celestrak-geo-raw.json`.
-
-## Social pack
-
-LinkedIn and Instagram copy, branded stills, and the EN/PT explainer videos live in [`social-pack/`](social-pack/). Posts are bilingual (PT-BR then EN-US) and end on this repository URL.
 
 ## License
 
