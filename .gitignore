@@ -50,3 +50,6 @@ scratch/
 # Local-only
 docs/education/
 social-pack/
+
+# Timestamped backups written by snippet/installer refreshes (regenerable)
+*.bak-[0-9]*
