@@ -41,6 +41,11 @@ graphify-out/
 graft/
 .impeccable/
 
+# AI memory & context (local only)
+.ai-memory.toml
+opencode.json
+.mcp.json
+
 # Local scratch
 *.log
 .cache/

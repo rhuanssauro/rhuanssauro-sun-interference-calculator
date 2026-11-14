@@ -150,6 +150,24 @@ npm run catalog
 
 `npm run catalog` rebuilds `data/geo-snapshot.json` from `data/celestrak-geo-raw.json`.
 
+## Production deployment
+
+The calculator is static HTML/CSS/JS with no server-side component. Any static host works (GitHub Pages, Cloudflare Pages, Netlify, nginx, Apache). For production deployments, add these security headers:
+
+```nginx
+# nginx example
+add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://celestrak.org;";
+add_header X-Content-Type-Options nosniff;
+add_header X-Frame-Options DENY;
+add_header Referrer-Policy strict-origin-when-cross-origin;
+```
+
+Key points:
+- **CSP** allows Celestrak HTTPS for live catalog refresh; all other resources are self-hosted
+- **`unsafe-inline`** for styles is required by the theme switcher's inline `data-theme` attribute
+- **HTTPS** must be enforced by the host (all modern static hosts do this automatically)
+- The `serve.py` development server blocks `/.git/` paths but adds no headers — use a real static host for production
+
 ## License
 
 This software is open source under the [MIT License](https://opensource.org/license/mit), an OSI-approved license. Copyright (c) 2026 Rhuanssauro Tech Inc. See [LICENSE](LICENSE).

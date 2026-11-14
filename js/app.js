@@ -370,6 +370,10 @@
     if (lat < -90 || lat > 90) fieldError("site-lat", "Latitude must be between -90 and 90 degrees.");
     if (lon < -180 || lon > 180) fieldError("site-lon", "Longitude must be between -180 and 180 degrees.");
     if (!(d > 0)) fieldError("ant-d", "Antenna diameter must be greater than 0 m.");
+    // Clamp validated inputs to bounds before committing to state
+    lat = Math.max(-90, Math.min(90, lat));
+    lon = Math.max(-180, Math.min(180, lon));
+    d = Math.max(0.01, d);
     var hemisphere = $("hemisphere") ? $("hemisphere").value : "auto";
     var actual = lat > 0 ? "Northern hemisphere" : lat < 0 ? "Southern hemisphere" : "Equator";
     if ($("hemisphere-status")) $("hemisphere-status").textContent = actual + " from latitude " + lat + "°.";
