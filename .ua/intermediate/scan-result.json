@@ -1,0 +1,350 @@
+{
+  "name": "rhuanssauro-sun-interference-calculator",
+  "description": "A receiving-earth-station calculator for geostationary sun interference (sun transit). It reports whether a given remote, dish, band, and satellite is in that geometry and, if so, when. Version 2.0 is an orbital workspace with hemisphere validation, a live UTC clock, Dark/Light/System theme, and CSV, HTML, and PDF export. The default example site is Maca\u00e9, Rio de Janeiro.",
+  "languages": [
+    "javascript",
+    "unknown",
+    "python"
+  ],
+  "frameworks": [
+    "vanilla JavaScript",
+    "Python standard library HTTP server"
+  ],
+  "files": [
+    {
+      "path": ".ignore",
+      "language": "unknown",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".trail/README.md",
+      "language": "markdown",
+      "sizeLines": 16,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".trail/hook.cjs",
+      "language": "javascript",
+      "sizeLines": 216,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md",
+      "language": "markdown",
+      "sizeLines": 32,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md",
+      "language": "markdown",
+      "sizeLines": 34,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md",
+      "language": "markdown",
+      "sizeLines": 36,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ua/class.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": "NOTICE",
+      "language": "unknown",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 173,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "assets/SOURCES.md",
+      "language": "markdown",
+      "sizeLines": 15,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "assets/ground-station.webp",
+      "language": "webp",
+      "sizeLines": 40,
+      "fileCategory": "code"
+    },
+    {
+      "path": "assets/orbital-header.webp",
+      "language": "webp",
+      "sizeLines": 214,
+      "fileCategory": "code"
+    },
+    {
+      "path": "assets/sun-alignment.webp",
+      "language": "webp",
+      "sizeLines": 42,
+      "fileCategory": "code"
+    },
+    {
+      "path": "css/dashboard.css",
+      "language": "css",
+      "sizeLines": 893,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "data/SOURCES.md",
+      "language": "markdown",
+      "sizeLines": 14,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "data/celestrak-geo-raw.json",
+      "language": "json",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": "data/geo-snapshot.js",
+      "language": "javascript",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "data/geo-snapshot.json",
+      "language": "json",
+      "sizeLines": 9135,
+      "fileCategory": "config"
+    },
+    {
+      "path": "docs/worktree-lifecycle.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "index.html",
+      "language": "html",
+      "sizeLines": 267,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "install.sh",
+      "language": "shell",
+      "sizeLines": 14,
+      "fileCategory": "script"
+    },
+    {
+      "path": "js/app.js",
+      "language": "javascript",
+      "sizeLines": 931,
+      "fileCategory": "code"
+    },
+    {
+      "path": "js/catalog.js",
+      "language": "javascript",
+      "sizeLines": 375,
+      "fileCategory": "code"
+    },
+    {
+      "path": "js/clock.js",
+      "language": "javascript",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "js/export-report.js",
+      "language": "javascript",
+      "sizeLines": 399,
+      "fileCategory": "code"
+    },
+    {
+      "path": "js/place.js",
+      "language": "javascript",
+      "sizeLines": 142,
+      "fileCategory": "code"
+    },
+    {
+      "path": "js/sun-transit.js",
+      "language": "javascript",
+      "sizeLines": 616,
+      "fileCategory": "code"
+    },
+    {
+      "path": "js/theme.js",
+      "language": "javascript",
+      "sizeLines": 128,
+      "fileCategory": "code"
+    },
+    {
+      "path": "package.json",
+      "language": "json",
+      "sizeLines": 12,
+      "fileCategory": "config"
+    },
+    {
+      "path": "requirements.txt",
+      "language": "txt",
+      "sizeLines": 10,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "scripts/build-catalog.js",
+      "language": "javascript",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "serve.ps1",
+      "language": "powershell",
+      "sizeLines": 11,
+      "fileCategory": "script"
+    },
+    {
+      "path": "serve.py",
+      "language": "python",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/browser-load.test.js",
+      "language": "javascript",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/catalog.test.js",
+      "language": "javascript",
+      "sizeLines": 68,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/clock.test.js",
+      "language": "javascript",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/dashboard.test.js",
+      "language": "javascript",
+      "sizeLines": 311,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/export.test.js",
+      "language": "javascript",
+      "sizeLines": 189,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/html-static.test.js",
+      "language": "javascript",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/place.test.js",
+      "language": "javascript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/prediction.test.js",
+      "language": "javascript",
+      "sizeLines": 205,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/theme.test.js",
+      "language": "javascript",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    }
+  ],
+  "totalFiles": 43,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "moderate",
+  "importMap": {
+    ".ignore": [],
+    ".trail/README.md": [],
+    ".trail/hook.cjs": [],
+    ".trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md": [],
+    ".trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md": [],
+    ".trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md": [],
+    ".ua/class.txt": [],
+    ".ua/config.json": [],
+    "NOTICE": [],
+    "README.md": [],
+    "assets/SOURCES.md": [],
+    "assets/ground-station.webp": [],
+    "assets/orbital-header.webp": [],
+    "assets/sun-alignment.webp": [],
+    "css/dashboard.css": [],
+    "data/SOURCES.md": [],
+    "data/celestrak-geo-raw.json": [],
+    "data/geo-snapshot.js": [],
+    "data/geo-snapshot.json": [],
+    "docs/worktree-lifecycle.md": [],
+    "index.html": [],
+    "install.sh": [],
+    "js/app.js": [],
+    "js/catalog.js": [],
+    "js/clock.js": [],
+    "js/export-report.js": [],
+    "js/place.js": [],
+    "js/sun-transit.js": [],
+    "js/theme.js": [],
+    "package.json": [],
+    "requirements.txt": [],
+    "scripts/build-catalog.js": [
+      "js/catalog.js"
+    ],
+    "serve.ps1": [],
+    "serve.py": [],
+    "tests/browser-load.test.js": [],
+    "tests/catalog.test.js": [],
+    "tests/clock.test.js": [],
+    "tests/dashboard.test.js": [],
+    "tests/export.test.js": [],
+    "tests/html-static.test.js": [],
+    "tests/place.test.js": [
+      "js/place.js"
+    ],
+    "tests/prediction.test.js": [],
+    "tests/theme.test.js": []
+  },
+  "importResolutions": [],
+  "stats": {
+    "filesScanned": 43,
+    "byCategory": {
+      "code": 25,
+      "docs": 10,
+      "config": 4,
+      "markup": 2,
+      "script": 2
+    },
+    "byLanguage": {
+      "unknown": 2,
+      "markdown": 8,
+      "javascript": 19,
+      "txt": 2,
+      "json": 4,
+      "webp": 3,
+      "css": 1,
+      "html": 1,
+      "shell": 1,
+      "powershell": 1,
+      "python": 1
+    }
+  },
+  "contentDigest": "445362c2d73648e87d765d17b85e55c85b8780300355f98bbc7bedbbd3d23b45"
+}

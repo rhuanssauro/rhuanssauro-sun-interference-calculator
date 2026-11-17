@@ -1,0 +1,507 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-17T18:25:00Z",
+  "files": {
+    "README.md": {
+      "overview": "Operator overview. Tour step 1. A receiving earth station looking at a geostationary satellite can see the Sun in the same line of sight twice a year. The calculator says whether a given remote, dish, band, and bird is in that geometry, and when. The default site is Maca\u00e9.",
+      "sections": [
+        {
+          "title": "The dashboard",
+          "lineRange": [
+            1,
+            27
+          ],
+          "explanation": "Version 2.0 is the orbital workspace: hemisphere check, live UTC now next to Last check, Dark/Light/System, and CSV, HTML, and PDF export. Favorites include Intelsat 37e, Telesat T-19, Hispasat H36W, and Intelsat 10-02.",
+          "tourOrder": 1
+        },
+        {
+          "title": "What the geometry means",
+          "lineRange": [
+            29,
+            79
+          ],
+          "explanation": "Explains sun interference, how often a circuit is actually hit, and how this calculator applies that. The dish cannot tell solar thermal noise from the intended carrier.",
+          "tourOrder": 1
+        },
+        {
+          "title": "Run, clock, tests",
+          "lineRange": [
+            81,
+            173
+          ],
+          "explanation": "Requirements, usage, and the clock, theme, and export section, with macOS, Linux, and Windows notes. Tests and a short production note follow. The license closes the file.",
+          "tourOrder": 1
+        }
+      ]
+    },
+    "index.html": {
+      "overview": "Dashboard markup. Tour step 2. Scripts load before the header. The form defaults to Maca\u00e9, latitude -22.37 and longitude -41.79.",
+      "sections": [
+        {
+          "title": "Theme script and header",
+          "lineRange": [
+            1,
+            46
+          ],
+          "explanation": "theme.js loads first so the theme can apply before paint. The header holds the mast. The UTC clock starts as --:--:-- until clock.js replaces it.",
+          "tourOrder": 2
+        },
+        {
+          "title": "Orbital header",
+          "lineRange": [
+            47,
+            61
+          ],
+          "explanation": "The page title is Sun interference calculator. UTC now and the catalog line sit under it. The catalog line starts as Loading the bundled satellite catalog.",
+          "tourOrder": 2
+        },
+        {
+          "title": "Link setup form",
+          "lineRange": [
+            63,
+            267
+          ],
+          "explanation": "The checker form starts with a station preset, a place lookup, and latitude and longitude. The help text says decimal degrees and a minus sign for south and west. The rest of the section is band, dish, satellite, verdict, and export chips.",
+          "tourOrder": 2
+        }
+      ]
+    },
+    "css/dashboard.css": {
+      "overview": "Dashboard stylesheet. Tour step 2. Tokens, a light-scheme override, and the mast, clock, and work layout. Dark is the night-shift default.",
+      "sections": [
+        {
+          "title": "Scheme tokens",
+          "lineRange": [
+            1,
+            126
+          ],
+          "explanation": "Base tokens, then a prefers-color-scheme light block. Theme.js can override the scheme. This file does not decide Dark versus Light by itself.",
+          "tourOrder": 2
+        },
+        {
+          "title": "Mast and clock",
+          "lineRange": [
+            127,
+            222
+          ],
+          "explanation": "Skip link, shell, wordmark, mast, page title, lede, and the clock block. Those are the pieces the header in index.html hooks.",
+          "tourOrder": 2
+        },
+        {
+          "title": "Work layout",
+          "lineRange": [
+            223,
+            893
+          ],
+          "explanation": "The rest is the checker, belt, verdict, and export layout. It is presentation only. Geometry lives in sun-transit.js.",
+          "tourOrder": 2
+        }
+      ]
+    },
+    "js/sun-transit.js": {
+      "overview": "Sun-transit geometry. Tour step 3. Turns a site, a dish, a band, and a satellite longitude into look angles, beamwidth, and whether the Sun is inside the receive beam.",
+      "sections": [
+        {
+          "title": "Angles and beam",
+          "lineRange": [
+            1,
+            120
+          ],
+          "explanation": "clamp and the wrap helpers keep degrees in range. wavelength, beamwidth, and outage radius come from dish diameter and frequency. ituMaxDurationMin is the duration cap the page can show beside the geometric window.",
+          "tourOrder": 3
+        },
+        {
+          "title": "Look angles",
+          "lineRange": [
+            122,
+            184
+          ],
+          "explanation": "siteEcefKm and satEcefKm place the station and the satellite. lookAngles returns azimuth and elevation. angularSeparation compares the satellite direction with the Sun direction.",
+          "tourOrder": 3
+        },
+        {
+          "title": "Sun and equinox",
+          "lineRange": [
+            185,
+            616
+          ],
+          "explanation": "julianDate, sunRaDec, gmstDeg, and sunPosition place the Sun for a UTC instant. equinoxWindows names the two seasons a year when a geostationary look can meet the Sun. The rest of the file walks those days and reports the window.",
+          "tourOrder": 3
+        }
+      ]
+    },
+    "js/app.js": {
+      "overview": "Dashboard controller. Tour step 3. Reads the form, picks a satellite from the catalog, calls the geometry, and paints the verdict. It does not compute look angles itself.",
+      "sections": [
+        {
+          "title": "Satellite lookup",
+          "lineRange": [
+            1,
+            153
+          ],
+          "explanation": "$ is getElementById. allSats, findSatByName, and findSatById read the loaded catalog. favoriteFor and defaultSatellite pick the starting bird. makeChip builds one belt chip.",
+          "tourOrder": 3
+        },
+        {
+          "title": "Selection",
+          "lineRange": [
+            154,
+            314
+          ],
+          "explanation": "renderBelt and fillSatSelect draw the Clarke belt and the select. applySelection and selectSatellite store the chosen satellite and band. escapeHtml is used before any catalog name is written as HTML.",
+          "tourOrder": 3
+        },
+        {
+          "title": "Form and verdict",
+          "lineRange": [
+            315,
+            931
+          ],
+          "explanation": "readForm validates latitude, longitude, dish, and band, and shows a field error instead of a fake verdict. The rest of the file calls the geometry, paints Impacted or not, and hands the same result to export.",
+          "tourOrder": 3
+        }
+      ]
+    },
+    "js/catalog.js": {
+      "overview": "Satellite catalog. Tour step 4. Turns Celestrak-style orbital elements into a longitude the belt can show, then filters to satellites in view of the site.",
+      "sections": [
+        {
+          "title": "Orbit to longitude",
+          "lineRange": [
+            1,
+            169
+          ],
+          "explanation": "wrap and epoch helpers, then geoLongitudeFromOmm and geoLatitudeApprox. recordFromOmm builds one selectable satellite. Debris and non-GEO motion are tagged so they can be dropped.",
+          "tourOrder": 4
+        },
+        {
+          "title": "Snapshot and view",
+          "lineRange": [
+            170,
+            269
+          ],
+          "explanation": "mergeCurated keeps the favorite satellites. buildSnapshot freezes the list. inView and filterForSite drop birds below the elevation mask for the typed latitude and longitude.",
+          "tourOrder": 4
+        },
+        {
+          "title": "Load path",
+          "lineRange": [
+            270,
+            375
+          ],
+          "explanation": "loadCatalog prefers a live fetch when canAttemptLive says so, and otherwise uses bundledSnapshot. A failed live fetch does not erase the bundled list.",
+          "tourOrder": 4
+        }
+      ]
+    },
+    "data/geo-snapshot.json": {
+      "overview": "Bundled GEO object list. Tour step 4. catalog.js reads this when a live Celestrak fetch is not used. It is data, not logic. Do not hand-edit a satellite. Rebuild with the catalog script.",
+      "sections": [
+        {
+          "title": "Object records",
+          "lineRange": [
+            1,
+            200
+          ],
+          "explanation": "The file opens as one JSON array of orbital records. Each record carries the name and elements catalog.js turns into a longitude.",
+          "tourOrder": 4
+        },
+        {
+          "title": "Rest of the belt",
+          "lineRange": [
+            201,
+            9135
+          ],
+          "explanation": "The remainder is the same record shape through the end of the file. The dashboard never parses this by hand. loadCatalog and the build script own it.",
+          "tourOrder": 4
+        }
+      ]
+    },
+    "data/SOURCES.md": {
+      "overview": "Source list for the 2026 model. Tour step 4. Names the operator calculators, the Celestrak GEO feeds, and ITU-R S.1525-1. The page geometry is an implementation of those ideas, not a copy of those sites.",
+      "sections": [
+        {
+          "title": "Operator calculators",
+          "lineRange": [
+            1,
+            7
+          ],
+          "explanation": "Lists Intelsat, Hispasat, and Telesat sun-interference calculators, plus the Intelsat background PDF.",
+          "tourOrder": 4
+        },
+        {
+          "title": "Catalog and ITU",
+          "lineRange": [
+            8,
+            14
+          ],
+          "explanation": "Celestrak GEO and the Intelsat and Telesat supplemental feeds supply the belt. ITU-R S.1525-1 is the recommendation the duration notes refer to. Map and weather links are listed for the site pin, not for the transit math.",
+          "tourOrder": 4
+        }
+      ]
+    },
+    "js/clock.js": {
+      "overview": "Live UTC clock. Tour step 5. Formatting is pure and testable. The ticker only runs when a DOM element is passed in. Default tick is one second.",
+      "sections": [
+        {
+          "title": "Format helpers",
+          "lineRange": [
+            1,
+            32
+          ],
+          "explanation": "The file is a small UMD wrapper so node:test and the browser both see UtcClock. formatUtc prints ISO with a space instead of T. An invalid date returns an em dash. formatUtcSeconds strips the milliseconds for the last-check stamp.",
+          "tourOrder": 5
+        },
+        {
+          "title": "Ticker",
+          "lineRange": [
+            34,
+            66
+          ],
+          "explanation": "startTicker paints immediately, then every tickMs, default 1000. now, setInterval, and clearInterval can be injected. stop clears the handle. If there is no element, it returns a no-op stop.",
+          "tourOrder": 5
+        }
+      ]
+    },
+    "js/theme.js": {
+      "overview": "Dark, Light, and System. Tour step 5. The stored value is checked before it is applied. System follows the prefers-color-scheme media query.",
+      "sections": [
+        {
+          "title": "Store and apply",
+          "lineRange": [
+            1,
+            74
+          ],
+          "explanation": "isTheme accepts only the three names. readStoredTheme returns a safe default when storage is empty or junk. applyTheme sets the document. setTheme persists and applies in one call.",
+          "tourOrder": 5
+        },
+        {
+          "title": "Control binding",
+          "lineRange": [
+            76,
+            128
+          ],
+          "explanation": "initTheme reads storage once at startup, which is why the script tag sits at the top of index.html. bindControl keeps the Dark, Light, and System buttons in step with the current value.",
+          "tourOrder": 5
+        }
+      ]
+    },
+    "js/export-report.js": {
+      "overview": "CSV, HTML, and PDF-style print export. Tour step 5. buildReportData is the only object the three writers share, so the three formats cannot drift.",
+      "sections": [
+        {
+          "title": "Report data",
+          "lineRange": [
+            1,
+            129
+          ],
+          "explanation": "esc, coordinate formatters, and slugify feed the filename. buildReportData copies the current check: site, satellite, band, verdict, and the window times. A missing field stays missing.",
+          "tourOrder": 5
+        },
+        {
+          "title": "CSV and HTML",
+          "lineRange": [
+            131,
+            345
+          ],
+          "explanation": "toCsv writes one parameter block and the window rows. toHtmlReport is a standalone document, not a fragment of the dashboard, so it can be saved or printed alone.",
+          "tourOrder": 5
+        },
+        {
+          "title": "Download and print",
+          "lineRange": [
+            346,
+            399
+          ],
+          "explanation": "downloadText triggers a file save. openPrintableReport opens the HTML for the browser print dialog, which is the PDF path. Neither function recomputes the geometry.",
+          "tourOrder": 5
+        }
+      ]
+    },
+    "serve.py": {
+      "overview": "Local static server. Tour step 6. Standard library only. Same shape as the WeatherMeter server: loopback unless --expose, and .git is not served.",
+      "sections": [
+        {
+          "title": "Git path block",
+          "lineRange": [
+            1,
+            28
+          ],
+          "explanation": "GET and HEAD drop any path that starts with /.git before the parent handler sees it.",
+          "tourOrder": 6
+        },
+        {
+          "title": "Bind policy",
+          "lineRange": [
+            31,
+            54
+          ],
+          "explanation": "main parses port and bind. A non-loopback address without --expose is refused. The server prints the URL and runs until Ctrl-C.",
+          "tourOrder": 6
+        }
+      ]
+    },
+    "tests/browser-load.test.js": {
+      "overview": "Loads the dashboard scripts in a window-like global and checks they attach. Tour step 6. This is the browser-load script named in package.json.",
+      "sections": [
+        {
+          "title": "Harness",
+          "lineRange": [
+            1,
+            40
+          ],
+          "explanation": "Sets up a minimal window and document, then loadInWindow evaluates one repo script against that global. The scripts use a UMD or global attach, so they must export without a bundler.",
+          "tourOrder": 6
+        },
+        {
+          "title": "Load assertions",
+          "lineRange": [
+            41,
+            76
+          ],
+          "explanation": "The remaining tests call loadInWindow on the page scripts and assert the globals the dashboard expects are present. A script that only works as an ES module fails here.",
+          "tourOrder": 6
+        }
+      ]
+    },
+    "package.json": {
+      "overview": "Manifest for version 2.0.0. Tour step 6. No dependencies. test runs every tests/*.test.js file. catalog rebuilds the satellite list. browser-load runs the one browser harness.",
+      "sections": [
+        {
+          "title": "Identity",
+          "lineRange": [
+            1,
+            6
+          ],
+          "explanation": "Name rhuanssauro-sun-interference-calculator, MIT, not private. The description says GSO sun-transit checker for a receiving earth station.",
+          "tourOrder": 6
+        },
+        {
+          "title": "Scripts",
+          "lineRange": [
+            7,
+            12
+          ],
+          "explanation": "test, catalog, and browser-load are node commands. There is no build step. The page is the files under js/ as they sit in the repo.",
+          "tourOrder": 6
+        }
+      ]
+    },
+    ".trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md": {
+      "overview": "Documentation file 2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md (markdown, 32 lines).",
+      "sections": []
+    },
+    ".trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md": {
+      "overview": "Documentation file 2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md (markdown, 34 lines).",
+      "sections": []
+    },
+    ".trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md": {
+      "overview": "Documentation file 2026-11-14-security-hardening-input-clamping-and-production-rhuan.md (markdown, 36 lines).",
+      "sections": []
+    },
+    "install.sh": {
+      "overview": "Short install helper for the local page.",
+      "sections": []
+    },
+    "requirements.txt": {
+      "overview": "Notes that serve.py uses the Python standard library only. Node is optional, for tests and the catalog build.",
+      "sections": []
+    },
+    "serve.ps1": {
+      "overview": "Windows helper that starts the same local server.",
+      "sections": []
+    },
+    "data/celestrak-geo-raw.json": {
+      "overview": "Raw Celestrak GEO catalog kept as the catalog input.",
+      "sections": []
+    },
+    ".ignore": {
+      "overview": "Source file .ignore (unknown, 5 lines).",
+      "sections": []
+    },
+    ".trail/README.md": {
+      "overview": "Documentation file README.md (markdown, 16 lines).",
+      "sections": []
+    },
+    ".trail/hook.cjs": {
+      "overview": "Source file hook.cjs (javascript, 216 lines). It defines 12 extracted functions.",
+      "sections": []
+    },
+    ".ua/class.txt": {
+      "overview": "Size-class marker for this Understand Anything run. This repo is class full.",
+      "sections": []
+    },
+    ".ua/config.json": {
+      "overview": "Understand Anything config. Output language for this run is English.",
+      "sections": []
+    },
+    "NOTICE": {
+      "overview": "Source file NOTICE (unknown, 8 lines).",
+      "sections": []
+    },
+    "assets/SOURCES.md": {
+      "overview": "Documentation file SOURCES.md (markdown, 15 lines).",
+      "sections": []
+    },
+    "assets/ground-station.webp": {
+      "overview": "Source file ground-station.webp (webp, 40 lines).",
+      "sections": []
+    },
+    "assets/orbital-header.webp": {
+      "overview": "Source file orbital-header.webp (webp, 214 lines).",
+      "sections": []
+    },
+    "assets/sun-alignment.webp": {
+      "overview": "Source file sun-alignment.webp (webp, 42 lines).",
+      "sections": []
+    },
+    "data/geo-snapshot.js": {
+      "overview": "Source file geo-snapshot.js (javascript, 1 lines).",
+      "sections": []
+    },
+    "docs/worktree-lifecycle.md": {
+      "overview": "Documentation file worktree-lifecycle.md (markdown, 8 lines).",
+      "sections": []
+    },
+    "js/place.js": {
+      "overview": "Source file place.js (javascript, 142 lines).",
+      "sections": []
+    },
+    "scripts/build-catalog.js": {
+      "overview": "Rebuilds the selectable satellite catalog from the GEO snapshot.",
+      "sections": []
+    },
+    "tests/catalog.test.js": {
+      "overview": "Source file catalog.test.js (javascript, 68 lines).",
+      "sections": []
+    },
+    "tests/clock.test.js": {
+      "overview": "Source file clock.test.js (javascript, 52 lines).",
+      "sections": []
+    },
+    "tests/dashboard.test.js": {
+      "overview": "Source file dashboard.test.js (javascript, 311 lines). It defines 1 extracted function.",
+      "sections": []
+    },
+    "tests/export.test.js": {
+      "overview": "Source file export.test.js (javascript, 189 lines). It defines 1 extracted function.",
+      "sections": []
+    },
+    "tests/html-static.test.js": {
+      "overview": "Source file html-static.test.js (javascript, 94 lines).",
+      "sections": []
+    },
+    "tests/place.test.js": {
+      "overview": "Source file place.test.js (javascript, 90 lines).",
+      "sections": []
+    },
+    "tests/prediction.test.js": {
+      "overview": "Source file prediction.test.js (javascript, 205 lines).",
+      "sections": []
+    },
+    "tests/theme.test.js": {
+      "overview": "Source file theme.test.js (javascript, 85 lines). It defines 2 extracted functions.",
+      "sections": []
+    }
+  }
+}
