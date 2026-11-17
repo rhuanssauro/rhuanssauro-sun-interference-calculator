@@ -1,0 +1,1269 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "rhuanssauro-sun-interference-calculator",
+    "description": "A receiving-earth-station calculator for geostationary sun interference. It reports whether a given remote, dish, band, and satellite is in that geometry, and when. The default example site is Maca\u00e9.",
+    "languages": [
+      "javascript",
+      "unknown",
+      "python"
+    ],
+    "frameworks": [
+      "vanilla JavaScript",
+      "Python standard library HTTP server"
+    ],
+    "analyzedAt": "2026-11-17T18:20:00Z",
+    "gitCommitHash": "44f95343964e37fcc90b54ea01cbe5696dc9bc32"
+  },
+  "nodes": [
+    {
+      "id": "document:.trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md",
+      "type": "document",
+      "name": "2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md",
+      "filePath": ".trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md",
+      "summary": "Documentation file 2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md (markdown, 32 lines).",
+      "tags": [
+        "documentation",
+        "markdown",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md",
+      "type": "document",
+      "name": "2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md",
+      "filePath": ".trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md",
+      "summary": "Documentation file 2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md (markdown, 34 lines).",
+      "tags": [
+        "documentation",
+        "markdown",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md",
+      "type": "document",
+      "name": "2026-11-14-security-hardening-input-clamping-and-production-rhuan.md",
+      "filePath": ".trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md",
+      "summary": "Documentation file 2026-11-14-security-hardening-input-clamping-and-production-rhuan.md (markdown, 36 lines).",
+      "tags": [
+        "documentation",
+        "markdown",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Explains the GSO sun-interference calculator for a receiving earth station. Version 2.0 adds the orbital workspace, hemisphere check, live UTC clock, theme control, and CSV, HTML, and PDF export. The default site is Maca\u00e9.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview",
+        "markdown"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "index.html",
+      "summary": "Dashboard shell: theme control, live UTC now, last-check stamp, verdict, and export chips.",
+      "tags": [
+        "markup",
+        "html",
+        "project-file"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:install.sh",
+      "type": "file",
+      "name": "install.sh",
+      "filePath": "install.sh",
+      "summary": "Short install helper for the local page.",
+      "tags": [
+        "script",
+        "shell",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "package.json",
+      "summary": "Manifest for version 2.0.0. Scripts run node:test and rebuild the satellite catalog. No runtime dependency.",
+      "tags": [
+        "configuration",
+        "manifest",
+        "json"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "requirements.txt",
+      "summary": "Notes that serve.py uses the Python standard library only. Node is optional, for tests and the catalog build.",
+      "tags": [
+        "documentation",
+        "project-file",
+        "inventory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:serve.ps1",
+      "type": "file",
+      "name": "serve.ps1",
+      "filePath": "serve.ps1",
+      "summary": "Windows helper that starts the same local server.",
+      "tags": [
+        "script",
+        "powershell",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:data/SOURCES.md",
+      "type": "document",
+      "name": "SOURCES.md",
+      "filePath": "data/SOURCES.md",
+      "summary": "Official sources used for the 2026 sun-interference model.",
+      "tags": [
+        "documentation",
+        "markdown",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:data/celestrak-geo-raw.json",
+      "type": "config",
+      "name": "celestrak-geo-raw.json",
+      "filePath": "data/celestrak-geo-raw.json",
+      "summary": "Raw Celestrak GEO catalog kept as the catalog input.",
+      "tags": [
+        "configuration",
+        "json",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:data/geo-snapshot.json",
+      "type": "config",
+      "name": "geo-snapshot.json",
+      "filePath": "data/geo-snapshot.json",
+      "summary": "Snapshot of geostationary objects the catalog is built from.",
+      "tags": [
+        "configuration",
+        "json",
+        "project-file"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:.ignore",
+      "type": "file",
+      "name": ".ignore",
+      "filePath": ".ignore",
+      "summary": "Source file .ignore (unknown, 5 lines).",
+      "tags": [
+        "source",
+        "project-file",
+        "inventory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.trail/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": ".trail/README.md",
+      "summary": "Documentation file README.md (markdown, 16 lines).",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview",
+        "markdown"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.trail/hook.cjs",
+      "type": "file",
+      "name": "hook.cjs",
+      "filePath": ".trail/hook.cjs",
+      "summary": "Source file hook.cjs (javascript, 216 lines). It defines 12 extracted functions.",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:.trail/hook.cjs:onPath",
+      "type": "function",
+      "name": "onPath",
+      "filePath": ".trail/hook.cjs",
+      "lineRange": [
+        52,
+        64
+      ],
+      "summary": "onPath() in hook.cjs, lines 52-64.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:.trail/hook.cjs:newer",
+      "type": "function",
+      "name": "newer",
+      "filePath": ".trail/hook.cjs",
+      "lineRange": [
+        85,
+        95
+      ],
+      "summary": "newer(a, b) in hook.cjs, lines 85-95.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:.trail/hook.cjs:offerTrail",
+      "type": "function",
+      "name": "offerTrail",
+      "filePath": ".trail/hook.cjs",
+      "lineRange": [
+        126,
+        162
+      ],
+      "summary": "offerTrail() in hook.cjs, lines 126-162.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:.trail/hook.cjs:liveFiles",
+      "type": "function",
+      "name": "liveFiles",
+      "filePath": ".trail/hook.cjs",
+      "lineRange": [
+        167,
+        201
+      ],
+      "summary": "liveFiles(learnings, files) in hook.cjs, lines 167-201.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:.trail/hook.cjs:flatLine",
+      "type": "function",
+      "name": "flatLine",
+      "filePath": ".trail/hook.cjs",
+      "lineRange": [
+        203,
+        216
+      ],
+      "summary": "flatLine(text, max) in hook.cjs, lines 203-216.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.ua/class.txt",
+      "type": "document",
+      "name": "class.txt",
+      "filePath": ".ua/class.txt",
+      "summary": "Size-class marker for this Understand Anything run. This repo is class full.",
+      "tags": [
+        "documentation",
+        "project-file",
+        "inventory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.ua/config.json",
+      "type": "config",
+      "name": "config.json",
+      "filePath": ".ua/config.json",
+      "summary": "Understand Anything config. Output language for this run is English.",
+      "tags": [
+        "configuration",
+        "json",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:NOTICE",
+      "type": "file",
+      "name": "NOTICE",
+      "filePath": "NOTICE",
+      "summary": "Source file NOTICE (unknown, 8 lines).",
+      "tags": [
+        "source",
+        "project-file",
+        "inventory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:assets/SOURCES.md",
+      "type": "document",
+      "name": "SOURCES.md",
+      "filePath": "assets/SOURCES.md",
+      "summary": "Documentation file SOURCES.md (markdown, 15 lines).",
+      "tags": [
+        "documentation",
+        "markdown",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:assets/ground-station.webp",
+      "type": "file",
+      "name": "ground-station.webp",
+      "filePath": "assets/ground-station.webp",
+      "summary": "Source file ground-station.webp (webp, 40 lines).",
+      "tags": [
+        "source",
+        "webp",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:assets/orbital-header.webp",
+      "type": "file",
+      "name": "orbital-header.webp",
+      "filePath": "assets/orbital-header.webp",
+      "summary": "Source file orbital-header.webp (webp, 214 lines).",
+      "tags": [
+        "source",
+        "webp",
+        "project-file"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:assets/sun-alignment.webp",
+      "type": "file",
+      "name": "sun-alignment.webp",
+      "filePath": "assets/sun-alignment.webp",
+      "summary": "Source file sun-alignment.webp (webp, 42 lines).",
+      "tags": [
+        "source",
+        "webp",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:css/dashboard.css",
+      "type": "file",
+      "name": "dashboard.css",
+      "filePath": "css/dashboard.css",
+      "summary": "Markup file dashboard.css (css, 893 lines).",
+      "tags": [
+        "markup",
+        "stylesheet",
+        "css"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:data/geo-snapshot.js",
+      "type": "file",
+      "name": "geo-snapshot.js",
+      "filePath": "data/geo-snapshot.js",
+      "summary": "Source file geo-snapshot.js (javascript, 1 lines).",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/worktree-lifecycle.md",
+      "type": "document",
+      "name": "worktree-lifecycle.md",
+      "filePath": "docs/worktree-lifecycle.md",
+      "summary": "Documentation file worktree-lifecycle.md (markdown, 8 lines).",
+      "tags": [
+        "documentation",
+        "markdown",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:js/app.js",
+      "type": "file",
+      "name": "app.js",
+      "filePath": "js/app.js",
+      "summary": "Dashboard controller. It reads the site, dish, band, and satellite, then shows the sun-transit verdict.",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:js/catalog.js",
+      "type": "file",
+      "name": "catalog.js",
+      "filePath": "js/catalog.js",
+      "summary": "Clarke-belt catalog the dashboard selects from, including the favorite satellites.",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:js/clock.js",
+      "type": "file",
+      "name": "clock.js",
+      "filePath": "js/clock.js",
+      "summary": "Live UTC now clock next to the last-check stamp.",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:js/export-report.js",
+      "type": "file",
+      "name": "export-report.js",
+      "filePath": "js/export-report.js",
+      "summary": "Source file export-report.js (javascript, 399 lines).",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:js/place.js",
+      "type": "file",
+      "name": "place.js",
+      "filePath": "js/place.js",
+      "summary": "Source file place.js (javascript, 142 lines).",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:js/sun-transit.js",
+      "type": "file",
+      "name": "sun-transit.js",
+      "filePath": "js/sun-transit.js",
+      "summary": "Source file sun-transit.js (javascript, 616 lines).",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:js/theme.js",
+      "type": "file",
+      "name": "theme.js",
+      "filePath": "js/theme.js",
+      "summary": "Dark, Light, and System theme control.",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/build-catalog.js",
+      "type": "file",
+      "name": "build-catalog.js",
+      "filePath": "scripts/build-catalog.js",
+      "summary": "Rebuilds the selectable satellite catalog from the GEO snapshot.",
+      "tags": [
+        "source",
+        "javascript",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:serve.py",
+      "type": "file",
+      "name": "serve.py",
+      "filePath": "serve.py",
+      "summary": "Standard-library HTTP server that hosts the calculator.",
+      "tags": [
+        "source",
+        "python",
+        "project-file"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:serve.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "serve.py",
+      "lineRange": [
+        31,
+        50
+      ],
+      "summary": "main() in serve.py, lines 31-50.",
+      "tags": [
+        "function",
+        "exported",
+        "python"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:serve.py:Handler",
+      "type": "class",
+      "name": "Handler",
+      "filePath": "serve.py",
+      "lineRange": [
+        15,
+        28
+      ],
+      "summary": "Class Handler in serve.py. Methods include do_GET, do_HEAD.",
+      "tags": [
+        "class",
+        "python",
+        "type"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/browser-load.test.js",
+      "type": "file",
+      "name": "browser-load.test.js",
+      "filePath": "tests/browser-load.test.js",
+      "summary": "Source file browser-load.test.js (javascript, 76 lines). It defines 1 extracted function.",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/browser-load.test.js:loadInWindow",
+      "type": "function",
+      "name": "loadInWindow",
+      "filePath": "tests/browser-load.test.js",
+      "lineRange": [
+        20,
+        45
+      ],
+      "summary": "loadInWindow(rel) in browser-load.test.js, lines 20-45.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/catalog.test.js",
+      "type": "file",
+      "name": "catalog.test.js",
+      "filePath": "tests/catalog.test.js",
+      "summary": "Source file catalog.test.js (javascript, 68 lines).",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/clock.test.js",
+      "type": "file",
+      "name": "clock.test.js",
+      "filePath": "tests/clock.test.js",
+      "summary": "Source file clock.test.js (javascript, 52 lines).",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/dashboard.test.js",
+      "type": "file",
+      "name": "dashboard.test.js",
+      "filePath": "tests/dashboard.test.js",
+      "summary": "Source file dashboard.test.js (javascript, 311 lines). It defines 1 extracted function.",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/dashboard.test.js:dashboard",
+      "type": "function",
+      "name": "dashboard",
+      "filePath": "tests/dashboard.test.js",
+      "lineRange": [
+        9,
+        55
+      ],
+      "summary": "dashboard(fetcher, protocol) in dashboard.test.js, lines 9-55.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/export.test.js",
+      "type": "file",
+      "name": "export.test.js",
+      "filePath": "tests/export.test.js",
+      "summary": "Source file export.test.js (javascript, 189 lines). It defines 1 extracted function.",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/export.test.js:fixtureInput",
+      "type": "function",
+      "name": "fixtureInput",
+      "filePath": "tests/export.test.js",
+      "lineRange": [
+        9,
+        31
+      ],
+      "summary": "fixtureInput() in export.test.js, lines 9-31.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/html-static.test.js",
+      "type": "file",
+      "name": "html-static.test.js",
+      "filePath": "tests/html-static.test.js",
+      "summary": "Source file html-static.test.js (javascript, 94 lines).",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/place.test.js",
+      "type": "file",
+      "name": "place.test.js",
+      "filePath": "tests/place.test.js",
+      "summary": "Source file place.test.js (javascript, 90 lines).",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/prediction.test.js",
+      "type": "file",
+      "name": "prediction.test.js",
+      "filePath": "tests/prediction.test.js",
+      "summary": "Source file prediction.test.js (javascript, 205 lines).",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/theme.test.js",
+      "type": "file",
+      "name": "theme.test.js",
+      "filePath": "tests/theme.test.js",
+      "summary": "Source file theme.test.js (javascript, 85 lines). It defines 2 extracted functions.",
+      "tags": [
+        "source",
+        "test",
+        "javascript"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/theme.test.js:fakeStorage",
+      "type": "function",
+      "name": "fakeStorage",
+      "filePath": "tests/theme.test.js",
+      "lineRange": [
+        8,
+        19
+      ],
+      "summary": "fakeStorage(seed) in theme.test.js, lines 8-19.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/theme.test.js:fakeDoc",
+      "type": "function",
+      "name": "fakeDoc",
+      "filePath": "tests/theme.test.js",
+      "lineRange": [
+        21,
+        31
+      ],
+      "summary": "fakeDoc() in theme.test.js, lines 21-31.",
+      "tags": [
+        "function",
+        "internal",
+        "javascript"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:.trail/hook.cjs",
+      "target": "function:.trail/hook.cjs:onPath",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:.trail/hook.cjs",
+      "target": "function:.trail/hook.cjs:newer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:.trail/hook.cjs",
+      "target": "function:.trail/hook.cjs:offerTrail",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:.trail/hook.cjs",
+      "target": "function:.trail/hook.cjs:liveFiles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:.trail/hook.cjs",
+      "target": "function:.trail/hook.cjs:flatLine",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/build-catalog.js",
+      "target": "file:js/catalog.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:serve.py",
+      "target": "function:serve.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:serve.py",
+      "target": "class:serve.py:Handler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/browser-load.test.js",
+      "target": "function:tests/browser-load.test.js:loadInWindow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/dashboard.test.js",
+      "target": "function:tests/dashboard.test.js:dashboard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/export.test.js",
+      "target": "function:tests/export.test.js:fixtureInput",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/place.test.js",
+      "target": "file:js/place.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/theme.test.js",
+      "target": "function:tests/theme.test.js:fakeStorage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/theme.test.js",
+      "target": "function:tests/theme.test.js:fakeDoc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:.trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:.trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:.trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:install.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:package.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requirements.txt",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:serve.ps1",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:data/SOURCES.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:data/celestrak-geo-raw.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:data/geo-snapshot.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:.ignore",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:.trail/README.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:.ua/class.txt",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:.ua/config.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:NOTICE",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:assets/SOURCES.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:assets/ground-station.webp",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:assets/orbital-header.webp",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:assets/sun-alignment.webp",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:css/dashboard.css",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:data/geo-snapshot.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:docs/worktree-lifecycle.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:js/app.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:js/clock.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:js/export-report.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:js/sun-transit.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:js/theme.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/catalog.test.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/clock.test.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/html-static.test.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/prediction.test.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.4
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:documentation",
+      "name": "Documentation",
+      "description": "README and operator docs for the GSO sun-transit check. Default example site is Maca\u00e9.",
+      "nodeIds": [
+        "document:README.md",
+        "document:docs/worktree-lifecycle.md"
+      ]
+    },
+    {
+      "id": "layer:dashboard-shell",
+      "name": "Dashboard shell",
+      "description": "Page, stylesheet, and branded images for the orbital workspace.",
+      "nodeIds": [
+        "document:assets/SOURCES.md",
+        "file:assets/ground-station.webp",
+        "file:assets/orbital-header.webp",
+        "file:assets/sun-alignment.webp",
+        "file:css/dashboard.css",
+        "file:index.html"
+      ]
+    },
+    {
+      "id": "layer:calculator",
+      "name": "Calculator",
+      "description": "Geometry, catalog selection, clock, theme, and CSV/HTML/PDF export.",
+      "nodeIds": [
+        "file:js/app.js",
+        "file:js/catalog.js",
+        "file:js/clock.js",
+        "file:js/export-report.js",
+        "file:js/place.js",
+        "file:js/sun-transit.js",
+        "file:js/theme.js"
+      ]
+    },
+    {
+      "id": "layer:catalog-data",
+      "name": "Catalog data",
+      "description": "Celestrak GEO snapshot, source notes, and the catalog build script.",
+      "nodeIds": [
+        "config:data/celestrak-geo-raw.json",
+        "config:data/geo-snapshot.json",
+        "document:data/SOURCES.md",
+        "file:data/geo-snapshot.js",
+        "file:scripts/build-catalog.js"
+      ]
+    },
+    {
+      "id": "layer:tests",
+      "name": "Tests",
+      "description": "node:test checks, including the browser-load test.",
+      "nodeIds": [
+        "file:tests/browser-load.test.js",
+        "file:tests/catalog.test.js",
+        "file:tests/clock.test.js",
+        "file:tests/dashboard.test.js",
+        "file:tests/export.test.js",
+        "file:tests/html-static.test.js",
+        "file:tests/place.test.js",
+        "file:tests/prediction.test.js",
+        "file:tests/theme.test.js"
+      ]
+    },
+    {
+      "id": "layer:local-server",
+      "name": "Local server",
+      "description": "Python, shell, and PowerShell helpers that serve the page with no pip packages.",
+      "nodeIds": [
+        "file:install.sh",
+        "file:serve.ps1",
+        "file:serve.py"
+      ]
+    },
+    {
+      "id": "layer:config",
+      "name": "Configuration",
+      "description": "Package manifest, Python note, and this run's Understand Anything config.",
+      "nodeIds": [
+        "config:.ua/config.json",
+        "config:package.json",
+        "document:.ua/class.txt",
+        "document:requirements.txt"
+      ]
+    },
+    {
+      "id": "layer:project-notes",
+      "name": "Project notes",
+      "description": "Trail learnings and hook notes that are not part of the calculator runtime.",
+      "nodeIds": [
+        "document:.trail/README.md",
+        "document:.trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md",
+        "document:.trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md",
+        "document:.trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md",
+        "file:.ignore",
+        "file:.trail/hook.cjs",
+        "file:NOTICE"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "What the check is",
+      "description": "The README defines a receiving-earth-station check for geostationary sun interference. It reports whether a remote, dish, band, and satellite is in that geometry, and when. Version 2.0 adds the orbital workspace. The default site is Maca\u00e9.",
+      "nodeIds": [
+        "document:README.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Dashboard shell",
+      "description": "index.html holds the theme control, the live UTC now, the last-check stamp, the verdict, and the export chips. The stylesheet is css/dashboard.css.",
+      "nodeIds": [
+        "file:index.html",
+        "file:css/dashboard.css"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Sun transit math",
+      "description": "sun-transit.js decides whether the solar disk sits inside the receive beam and when the window starts and ends. app.js reads the form and shows the verdict.",
+      "nodeIds": [
+        "file:js/sun-transit.js",
+        "file:js/app.js"
+      ],
+      "languageLesson": "These files are plain browser scripts. They share state through globals on the page, not through an import bundler."
+    },
+    {
+      "order": 4,
+      "title": "Satellite catalog",
+      "description": "geo-snapshot.json is the GEO object list. catalog.js turns it into the selectable Clarke belt. build-catalog.js rebuilds that list. data/SOURCES.md names the official inputs.",
+      "nodeIds": [
+        "file:js/catalog.js",
+        "config:data/geo-snapshot.json",
+        "document:data/SOURCES.md"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Clock, theme, export",
+      "description": "clock.js paints UTC now. theme.js stores Dark, Light, or System. export-report.js writes CSV, HTML, and PDF for the current check.",
+      "nodeIds": [
+        "file:js/clock.js",
+        "file:js/theme.js",
+        "file:js/export-report.js"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Serve and test",
+      "description": "serve.py hosts the page with the standard library. The node:test files include a browser-load check. package.json is version 2.0.0 and has no runtime dependency.",
+      "nodeIds": [
+        "file:serve.py",
+        "file:tests/browser-load.test.js",
+        "config:package.json"
+      ]
+    }
+  ]
+}

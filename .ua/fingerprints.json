@@ -1,0 +1,625 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "44f95343964e37fcc90b54ea01cbe5696dc9bc32",
+  "generatedAt": "2026-11-17T21:05:49.397Z",
+  "files": {
+    ".ignore": {
+      "filePath": ".ignore",
+      "contentHash": "5b345696ac9daf0b07ce5b9c56d5ec914815e395286f4c9f9ac3ec8ec83bf507",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    },
+    ".trail/README.md": {
+      "filePath": ".trail/README.md",
+      "contentHash": "771c7c79b1a3829fa9c9bd74b4eca69d9cfb73430fb43b5e8dfd72661d414258",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": false
+    },
+    ".trail/hook.cjs": {
+      "filePath": ".trail/hook.cjs",
+      "contentHash": "3411ca7520ae7f92f21ad3e51f2ca72cad0dee7a5cb04fe16008506e6b2bd7f8",
+      "functions": [
+        {
+          "name": "remembered",
+          "params": [],
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "fromPkg",
+          "params": [
+            "base"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "pkgAbove",
+          "params": [
+            "file"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "onPath",
+          "params": [],
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "globalRoot",
+          "params": [],
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "versionOf",
+          "params": [
+            "distClaude"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "newer",
+          "params": [
+            "a",
+            "b"
+          ],
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "best",
+          "params": [
+            "dirs",
+            "name"
+          ],
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "entry",
+          "params": [
+            "name",
+            "cheapOnly"
+          ],
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "offerTrail",
+          "params": [],
+          "exported": false,
+          "lineCount": 37
+        },
+        {
+          "name": "liveFiles",
+          "params": [
+            "learnings",
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 35
+        },
+        {
+          "name": "flatLine",
+          "params": [
+            "text",
+            "max"
+          ],
+          "exported": false,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 217,
+      "hasStructuralAnalysis": true
+    },
+    ".trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md": {
+      "filePath": ".trail/learnings/2026-11-05-declare-explicit-project-in-ai-memory-rhuan.md",
+      "contentHash": "27168cdeb5904ceb16ec64dbaada5266e4693bcb1b6d763464db26d56dc72627",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": false
+    },
+    ".trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md": {
+      "filePath": ".trail/learnings/2026-11-14-security-audit-mode-defaulted-to-guidance-rhuan.md",
+      "contentHash": "37f0ff71d4b8e1b87698c616b223ea1a4b4b0b3bba71e0417d599630243c4959",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": false
+    },
+    ".trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md": {
+      "filePath": ".trail/learnings/2026-11-14-security-hardening-input-clamping-and-production-rhuan.md",
+      "contentHash": "3306433dea5ad076cc26d529c1b8a62800862c16d86d848de94e6d1520c3d4ca",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": false
+    },
+    ".ua/class.txt": {
+      "filePath": ".ua/class.txt",
+      "contentHash": "dba543a4750c9dcdff676390cb293b940e1b6836f4729a09aa03c686e55c52b1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    ".ua/config.json": {
+      "filePath": ".ua/config.json",
+      "contentHash": "08d37f20ea0af2233ae24f094723759f952381ecb6dd7f2aaa05ef96e95eae6b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "NOTICE": {
+      "filePath": "NOTICE",
+      "contentHash": "8d8fe658f8a4fbdae171703b671199c92f419b1901533f573c7e039adf53a35f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "65f369e7e03b7049e4e7a867e5e5b27a17877b69f49854bc3fdd3f33c593f7b7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 174,
+      "hasStructuralAnalysis": false
+    },
+    "assets/SOURCES.md": {
+      "filePath": "assets/SOURCES.md",
+      "contentHash": "06cf5b0138eb35e8c97fc4478592d1fc29d0630ad0f43bd40434a1d8c8cadba0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": false
+    },
+    "assets/ground-station.webp": {
+      "filePath": "assets/ground-station.webp",
+      "contentHash": "fe14d19cd84985faaeedb94027b425a15a79f310b96a71bb7e157c7f9718857d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": false
+    },
+    "assets/orbital-header.webp": {
+      "filePath": "assets/orbital-header.webp",
+      "contentHash": "7351c418d9b79fc5a53a5507bd4e2fd9b47ea213c8da220f5ad9f8c2d398d1b9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 215,
+      "hasStructuralAnalysis": false
+    },
+    "assets/sun-alignment.webp": {
+      "filePath": "assets/sun-alignment.webp",
+      "contentHash": "0d4ec0327b6e669fe63fce0967a16d03aed11834804c6d1d34ba0297211ca3b3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": false
+    },
+    "css/dashboard.css": {
+      "filePath": "css/dashboard.css",
+      "contentHash": "6a0f5c8dab32e8b5fefa71d3e285613b8d347442fb48908d76fb2bd8e34ea542",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 894,
+      "hasStructuralAnalysis": false
+    },
+    "data/SOURCES.md": {
+      "filePath": "data/SOURCES.md",
+      "contentHash": "df3843784511e7a061ef8d3af0139e26d8dd59f1adf2d258627cdb1bca985689",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": false
+    },
+    "data/celestrak-geo-raw.json": {
+      "filePath": "data/celestrak-geo-raw.json",
+      "contentHash": "32dabe51819af4ad19ca5379ddc751c20bd5d06b390ee33c3a1a0e643b88d516",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "data/geo-snapshot.js": {
+      "filePath": "data/geo-snapshot.js",
+      "contentHash": "1b309e55680aaa0b81e0e7f3c3a2f8f042631874fbd1c76d322c4ba6b61a9633",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "data/geo-snapshot.json": {
+      "filePath": "data/geo-snapshot.json",
+      "contentHash": "eb9743e95861e219d988e94e18804cf53460432e11b6205facb65f5e190b6519",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9136,
+      "hasStructuralAnalysis": false
+    },
+    "docs/worktree-lifecycle.md": {
+      "filePath": "docs/worktree-lifecycle.md",
+      "contentHash": "6b37599d0880f1195143c3d0887ab63d08cd747e74247d3a0b1c3ed54312ff9c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": false
+    },
+    "index.html": {
+      "filePath": "index.html",
+      "contentHash": "c1df7668f3d664f944b8f478477db34eb08361f50931f713585c1d8db930b776",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 268,
+      "hasStructuralAnalysis": false
+    },
+    "install.sh": {
+      "filePath": "install.sh",
+      "contentHash": "54362233bda05c2cf8efe7e799360fc33552e606bbc60ab1094d66b4c12f9429",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": false
+    },
+    "js/app.js": {
+      "filePath": "js/app.js",
+      "contentHash": "bc33366da08753acfc4d76afb1669a8611a0d1743d5283e505a56033a70b50de",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 932,
+      "hasStructuralAnalysis": true
+    },
+    "js/catalog.js": {
+      "filePath": "js/catalog.js",
+      "contentHash": "c75ea10a4ece4f70a63db825ff57274158c428a914389005708a671a88782c1b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 376,
+      "hasStructuralAnalysis": true
+    },
+    "js/clock.js": {
+      "filePath": "js/clock.js",
+      "contentHash": "74d381b828e24163d5f728d57133e4967f4fd34faad2d06559ebed98556e766c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 67,
+      "hasStructuralAnalysis": true
+    },
+    "js/export-report.js": {
+      "filePath": "js/export-report.js",
+      "contentHash": "b21937828d8abbe61c7d4f363290a44b5f3e5ba7d6ce5e8d56b3ea5578123ed2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 400,
+      "hasStructuralAnalysis": true
+    },
+    "js/place.js": {
+      "filePath": "js/place.js",
+      "contentHash": "852f833f915b4c656b910e281ff9af3e766fc5e5e0f161342c79d89e6abbeed4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 143,
+      "hasStructuralAnalysis": true
+    },
+    "js/sun-transit.js": {
+      "filePath": "js/sun-transit.js",
+      "contentHash": "e0ab688011503185a8064e4e54cdb3cc57a4ca307d54369a45a30e19d72f4e03",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 617,
+      "hasStructuralAnalysis": true
+    },
+    "js/theme.js": {
+      "filePath": "js/theme.js",
+      "contentHash": "5082a08703e49ced843050b2eade9b29317dba30956c7be4df6c91a5841535a1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 129,
+      "hasStructuralAnalysis": true
+    },
+    "package.json": {
+      "filePath": "package.json",
+      "contentHash": "ca75d64661a5387be0177f6b16bf8ebdb2a2c926de510161d1f9992ef34a277d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "requirements.txt": {
+      "filePath": "requirements.txt",
+      "contentHash": "1ab1b6c7eff1a26f023e337a4512bfeadb5294a3ec10b314f70b088306800555",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/build-catalog.js": {
+      "filePath": "scripts/build-catalog.js",
+      "contentHash": "f637878f28cb651042e2814474e9a14196e95945c47aa6e0b0b3ddb36c36558a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 66,
+      "hasStructuralAnalysis": true
+    },
+    "serve.ps1": {
+      "filePath": "serve.ps1",
+      "contentHash": "3c17a7a78707710998cf162219ba9402030e104ae34e7f8c5092d51892de2f95",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": false
+    },
+    "serve.py": {
+      "filePath": "serve.py",
+      "contentHash": "0e7faf65f4aec2c6e62f9369a70d7c92395eb88c4f8d350f199633d6b9520460",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "classes": [
+        {
+          "name": "Handler",
+          "methods": [
+            "do_GET",
+            "do_HEAD"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "imports": [
+        {
+          "source": "argparse",
+          "specifiers": [
+            "argparse"
+          ]
+        },
+        {
+          "source": "http.server",
+          "specifiers": [
+            "http.server"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "socketserver",
+          "specifiers": [
+            "socketserver"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        }
+      ],
+      "exports": [
+        "Handler",
+        "main"
+      ],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "tests/browser-load.test.js": {
+      "filePath": "tests/browser-load.test.js",
+      "contentHash": "3759d2d2105c4334b518d1f3700fe341b9421681845d3875fd148218fea72c40",
+      "functions": [
+        {
+          "name": "loadInWindow",
+          "params": [
+            "rel"
+          ],
+          "exported": false,
+          "lineCount": 26
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 77,
+      "hasStructuralAnalysis": true
+    },
+    "tests/catalog.test.js": {
+      "filePath": "tests/catalog.test.js",
+      "contentHash": "1db7a2b03330ba9eb0d579d6d59410a298302d6724bac139aeb9cd0eb9415928",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "tests/clock.test.js": {
+      "filePath": "tests/clock.test.js",
+      "contentHash": "bc3efea2f42b1ffc056361080ca15507eeaf37d17608f3ebfd20d1d7ccfb7040",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "tests/dashboard.test.js": {
+      "filePath": "tests/dashboard.test.js",
+      "contentHash": "07bb7f7cd99a6a199609ae42dd8add2f344dd44d3bba467983b2bb75e0b2dade",
+      "functions": [
+        {
+          "name": "dashboard",
+          "params": [
+            "fetcher",
+            "protocol"
+          ],
+          "exported": false,
+          "lineCount": 47
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 312,
+      "hasStructuralAnalysis": true
+    },
+    "tests/export.test.js": {
+      "filePath": "tests/export.test.js",
+      "contentHash": "3317248f2fa67253688c953b61c6881570655a543058f86fc2c4e4f18c2f998e",
+      "functions": [
+        {
+          "name": "fixtureInput",
+          "params": [],
+          "exported": false,
+          "lineCount": 23
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 190,
+      "hasStructuralAnalysis": true
+    },
+    "tests/html-static.test.js": {
+      "filePath": "tests/html-static.test.js",
+      "contentHash": "33a71c4098104cbbe19eaa548eb2e347351914c55de2a05bf4eec83ad394c2f8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 95,
+      "hasStructuralAnalysis": true
+    },
+    "tests/place.test.js": {
+      "filePath": "tests/place.test.js",
+      "contentHash": "f945a1c7d44229f4f2e6022e6a91d7556a57532ce2a4e7379eb0d784c15b9549",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 91,
+      "hasStructuralAnalysis": true
+    },
+    "tests/prediction.test.js": {
+      "filePath": "tests/prediction.test.js",
+      "contentHash": "e54755755d03c1fd68377f7df5ff5648492e54fd5c3e2087b03bbbe5dd4696c1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 206,
+      "hasStructuralAnalysis": true
+    },
+    "tests/theme.test.js": {
+      "filePath": "tests/theme.test.js",
+      "contentHash": "0174ba628cdc0aedcaa0bb43233e921339e33ddbb647a2358673b85397926eca",
+      "functions": [
+        {
+          "name": "fakeStorage",
+          "params": [
+            "seed"
+          ],
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "fakeDoc",
+          "params": [],
+          "exported": false,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 86,
+      "hasStructuralAnalysis": true
+    }
+  }
+}
